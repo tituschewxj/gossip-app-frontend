@@ -15,7 +15,9 @@ export const userLogin = async (forumUser: ForumUser) => {
     }).then((res: AxiosResponse | any) => {
         console.log(res.data)
         localStorage.setItem("token", res.headers.get("Authorization"));
+        updateJWTToken()
         console.log("sucessfully logged in")
+        console.log(axios.defaults.headers.common['Authorization'])
         return res.data
     }).catch((err) => console.error(err));
 }
@@ -28,6 +30,7 @@ export const userLogout = async () => {
         },
     }).then((res: AxiosResponse) => {
         localStorage.removeItem('token')
+        updateJWTToken()
         console.log("sucessfully logged out")
     }).catch((err) => console.error(err));
 }
@@ -44,6 +47,7 @@ export const userSignup = async (forumUser: ForumUser) => {
       }).then((res: any) => {
         console.log(res.data)
         localStorage.setItem("token", res.headers.get("Authorization"))
+        updateJWTToken()
       }).catch((err) => console.error(err));
 }
 

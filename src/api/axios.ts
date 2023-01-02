@@ -10,8 +10,15 @@ export const hasJWTExpired = (): boolean => {
     if (token) {
         const decoded = jwtDecode<JWTToken>(token)
         const dateNow = new Date()
-        return decoded.exp > dateNow.getTime()
+        if (decoded.exp < dateNow.getTime()) {
+            console.log('not expired')
+            return false
+        } else {
+            console.log('expired')
+            return true
+        }
     }
+    console.log('no jwt')
     return true
 }
 

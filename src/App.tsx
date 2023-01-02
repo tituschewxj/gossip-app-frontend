@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import './App.css'
 // import axios from "./api/axios"
 import HomePage from "./pages/HomePage"
@@ -11,6 +11,7 @@ import EditPage from "./pages/EditPage"
 import ThreadPage from "./pages/ThreadPage"
 import ProfilePage from "./pages/ProfilePage"
 import { UserContext } from "./hooks/context"
+import { updateJWTToken } from "./api/authenticationApi"
 
 
 function App() {
@@ -20,9 +21,21 @@ function App() {
   const userContext: UserContext = {
     isLoggedIn: isLoggedIn,
     username: username,
-    setIsLoggedIn: setIsLoggedIn,
-    setUsername: setUsername,
+    setIsLoggedIn: (val: boolean) => {
+      setIsLoggedIn(val)
+      localStorage.setItem('loggedIn', `${val}`)
+    },
+    setUsername: (val: string) => {
+      setUsername(val)
+      localStorage.setItem('username', val)
+    },
   }
+
+  useEffect(() => { 
+    updateJWTToken()
+    setIsLoggedIn(localStorage.getItem('loggedIn') === 'true')
+    setUsername(localStorage.getItem('username') as string)
+  }, [username, isLoggedIn])
   return (
     <>
       <UserContext.Provider value={userContext}>
