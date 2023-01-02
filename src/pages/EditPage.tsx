@@ -19,35 +19,6 @@ function EditPage() {
   const { post_id, comment_id } = useParams()
   const [errorVisible, setErrorVisible] = useState<boolean>(false)
 
-  // useEffect(() => {
-  //   // init content from api
-  //   if (comment_id) {
-  //     axios.get(`api/v1/comments/${comment_id}`)
-  //       .then(res => res.data)
-  //       .then((res: ForumComment) => {
-  //         setForumObject({ ...res, type: "comment" })
-  //       }).catch(err => {
-  //         console.log(err)
-  //         setErrorVisible(true)
-  //       })
-  //     return
-  //   }
-  //   if (post_id) {
-  //     axios.get(`api/v1/posts/${post_id}`)
-  //       .then(res => res.data)
-  //       .then((res: ForumPost) => {
-  //         setForumObject({ ...res, type: "post" })
-  //       }).catch(err => {
-  //         console.log(err)
-  //         setErrorVisible(true)
-  //       })
-  //     return
-  //   }
-  //   // else: new post
-  //   setForumObject(initForumPost())
-  //   setEditType("new")
-  // }, [post_id, comment_id])
-
   const { data: forumObject } = useQuery('edit_forumobject', () => {
     if (comment_id) {
       return getComment(comment_id)

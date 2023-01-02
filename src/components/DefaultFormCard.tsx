@@ -7,7 +7,6 @@ import { AxiosResponse } from 'axios'
 
 import { useMutation } from 'react-query'
 
-// import axios from '../api/axios'
 import DefaultDialog from './DefaultDialog'
 import useFormHeader from '../hooks/useFormHeader'
 import DefaultFormCardTextFields from './Form/DefaultFormCardTextFields'
@@ -16,8 +15,6 @@ import { mutateForumObject } from '../api/forumApi'
 
 function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: ForumObject }) {
   const [forumObject, setForumObject] = useState<ForumObject>(initForumPost() as ForumObject)
-  // const [title, setTitle] = useState<string>()
-  // const [content, setContent] = useState<string>()
   const formHeader = useFormHeader({ formBehaviourType: props.formBehaviour.type, forumObjectType: props.forumObject.type })
   const [deleteConfirmationDialogVisible, setDeleteConfirmationDialogVisible] = useState<boolean>(false)
   const [errorVisible, setErrorVisible] = useState<boolean>(false)
@@ -54,12 +51,10 @@ function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: For
   })
 
   const handleSubmit = () => {
-    // console.log(`${typeof forumObject}_${forumObject.id ? 'edit' : 'new'}`)
     if (props.formBehaviour.handleSubmit) {
       props.formBehaviour.handleSubmit()
       return
     }
-    console.log(props.formBehaviour.type)
     switch (props.formBehaviour.type) {
       case 'new':
         return mutate({ forumObject: forumObject, mutateOperation: 'create' })
@@ -122,6 +117,11 @@ function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: For
           {props.formBehaviour.type === "login" && <Button variant='contained' sx={{ margin: 1 }}
             onClick={handleSubmit}>
             {"Login"}
+          </Button>}
+
+          {props.formBehaviour.type === "login" && <Button variant='contained' sx={{ margin: 1 }}
+            onClick={() => {}}>
+            {"Register"}
           </Button>}
 
           {props.formBehaviour.type === "register" && <Button variant='contained' sx={{ margin: 1 }}

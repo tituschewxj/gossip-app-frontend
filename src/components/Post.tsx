@@ -24,9 +24,9 @@ function Post(props: { forumPost: ForumPost }) {
   //     .then((res) => console.log(res))
   //     .catch((err) => console.log(err))
   // }
-  useEffect(() => {
-    console.log(props.forumPost.content)
-  })
+  // useEffect(() => {
+  //   console.log(props.forumPost.content)
+  // })
 
   return (
     <Container sx={{ marginTop: 1 }}>

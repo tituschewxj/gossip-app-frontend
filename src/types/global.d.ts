@@ -9,7 +9,7 @@ declare global {
     type ForumObjectType = "post" | "comment" | "tag" | "user" | "profile" | "register"
 
     type ForumPost = {
-        static type: "post"
+        type: "post"
         id?: number
         title: string
         content: string
@@ -18,7 +18,7 @@ declare global {
         author: string
     }
     type ForumComment = {
-        static type: "comment"
+        type: "comment"
         id?: number
         content: string
         author: string
@@ -27,13 +27,13 @@ declare global {
         post_id?: number
     }
     type ForumTag = {
-        static type: "tag"
+        type: "tag"
         id: number
         name: string
     }
     type ForumUser = {
-        // used to sign in and manage jwt tokens
-        static type: "user" 
+        // used for authentication and manage jwt tokens
+        type: "user" 
         email: string
         password: string
         encrypted_password?: string
@@ -76,6 +76,13 @@ declare global {
     }
 
     type MutateOperation = 'create' | 'update' | 'delete'
+
+    type UserContext = {
+        isLoggedIn: boolean
+        setIsLoggedIn?: Function
+        username?: string
+        setUsername?: Function
+    }
     
     // type ForumObject = PostObject | CommentObject
 
