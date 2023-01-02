@@ -79,3 +79,8 @@ export const mutateForumObject = async (forumObject: ForumObject, mutateOperatio
             break;
     }
 }
+
+export const addProfile = async (forumProfile: ForumProfile) => {
+    return axios.post(`api/v1/profiles`, forumProfile)
+}
+

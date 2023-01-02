@@ -1,8 +1,18 @@
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 
-// adds the jwt token to the headers
-if (localStorage.getItem('token')) {
-    axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+type JWTToken = {
+    exp: number
+}
+
+export const hasJWTExpired = (): boolean => {
+    const token = localStorage.getItem('token')
+    if (token) {
+        const decoded = jwtDecode<JWTToken>(token)
+        const dateNow = new Date()
+        return decoded.exp > dateNow.getTime()
+    }
+    return true
 }
 
 const axiosConfig = {

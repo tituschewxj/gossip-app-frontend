@@ -1,14 +1,16 @@
 import { AxiosResponse } from "axios";
-import axios from "./axios";
+import axios, { hasJWTExpired } from "./axios";
 
 export const userLogin = async (forumUser: ForumUser) => {
+    updateJWTToken()
+    console.log(axios.defaults.headers.common['Authorization'])
     return axios.post('login', {
         headers: {
             'Content-Type': 'application/json',
         },
         user: {
-            email: "test@test.com",
-            password: "password",
+            email: forumUser.email,
+            password: forumUser.password,
         },
     }).then((res: AxiosResponse | any) => {
         console.log(res.data)
@@ -43,4 +45,18 @@ export const userSignup = async (forumUser: ForumUser) => {
         console.log(res.data)
         localStorage.setItem("token", res.headers.get("Authorization"))
       }).catch((err) => console.error(err));
+}
+
+export const updateJWTToken = (): void => {
+    if (localStorage.getItem('token')) {
+        if (hasJWTExpired()) {
+            localStorage.removeItem('token')
+            axios.defaults.headers.common['Authorization'] = undefined
+        } else {
+            // adds the jwt token to the headers
+            axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+        }
+    } else {
+        axios.defaults.headers.common['Authorization'] = undefined
+    }
 }

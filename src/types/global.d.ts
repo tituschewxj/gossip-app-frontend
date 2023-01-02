@@ -4,7 +4,7 @@ declare global {
 
     type PostsDetails = PostDetails[]
 
-    type ForumObject = ForumPost | ForumObject | ForumTag | ForumUser
+    type ForumObject = ForumPost | ForumObject | ForumTag | ForumUser | ForumProfile
 
     type ForumObjectType = "post" | "comment" | "tag" | "user" | "profile" | "register"
 
@@ -34,6 +34,7 @@ declare global {
     type ForumUser = {
         // used for authentication and manage jwt tokens
         type: "user" 
+        id?: number
         email: string
         password: string
         encrypted_password?: string
@@ -54,11 +55,11 @@ declare global {
     type ForumProfile = {
         type: "profile"
         username: string
-        email: string
         description: string
+        user_id?: number
     }
 
-    type FormBehaviourType = "edit" | "new" | "login" | "register"
+    type FormBehaviourType = "edit" | "new" | AuthenticationOperation
     type FormBehaviour = {
         type: FormBehaviourType
         handleSubmit?: Function
@@ -66,7 +67,6 @@ declare global {
         handleDelete?: Function
         handleAfterSubmit?: Function
     }
-
     type DialogBehaviour = {
         type: "confirmation" | "error" | "success"
         handleConfirmation?: Function
@@ -76,6 +76,8 @@ declare global {
     }
 
     type MutateOperation = 'create' | 'update' | 'delete'
+
+    type AuthenticationOperation = 'login' | 'register' | 'logout'
 
     type UserContext = {
         isLoggedIn: boolean

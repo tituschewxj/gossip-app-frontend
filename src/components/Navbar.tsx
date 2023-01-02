@@ -1,11 +1,16 @@
-import { AppBar, Button, Icon, IconButton, TextField, Toolbar, Tooltip, Typography } from '@mui/material'
-import { makeStyles, createStyles } from '@mui/styles';
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
-import NavigateIconButton from './DefaultIconButton';
-import CreateIcon from '@mui/icons-material/Create';
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { AppBar, TextField, Toolbar, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
+import CreateIcon from '@mui/icons-material/Create'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+
+import NavigateIconButton from './DefaultIconButton'
+import { UserContext } from '../hooks/context'
 
 const useStyles = makeStyles({
   // style for search bar
@@ -13,11 +18,12 @@ const useStyles = makeStyles({
     backgroundColor: "white",
     borderRadius: 5,
   }
-});
+})
 
 function Navbar() {
-  const classes = useStyles();
-  const navigate = useNavigate();
+  const classes = useStyles()
+  const navigate = useNavigate()
+  const { isLoggedIn, username } = useContext(UserContext)
 
   return (
     <AppBar position="sticky">
@@ -32,7 +38,8 @@ function Navbar() {
 
           fullWidth
           sx={{ flex: 1 }}></TextField>
-        <NavigateIconButton icon={<LoginOutlinedIcon />} tooltipTitle={'Login'} onClick={() => navigate('/login')} />
+        {!isLoggedIn && <NavigateIconButton icon={<LoginOutlinedIcon />} tooltipTitle={'Login'} onClick={() => navigate('/login')} />}
+        {isLoggedIn && <NavigateIconButton icon={<AccountCircleOutlinedIcon />} tooltipTitle={'Profile'} onClick={() => navigate(`/profile/${username}`)} />}
       </Toolbar>
     </AppBar>
   )

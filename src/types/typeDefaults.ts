@@ -62,7 +62,7 @@ export function initForumProfile(options?: Partial<ForumProfile>): ForumProfile 
     const defaults: ForumProfile = {
         type: "profile",
         username: "",
-        email: "",
+        // user_id: undefined,
         description: "",
     }
     return {

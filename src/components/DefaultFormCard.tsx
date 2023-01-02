@@ -120,13 +120,19 @@ function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: For
           </Button>}
 
           {props.formBehaviour.type === "login" && <Button variant='contained' sx={{ margin: 1 }}
-            onClick={() => {}}>
+            onClick={() => {navigate('/register')}}>
             {"Register"}
           </Button>}
+
 
           {props.formBehaviour.type === "register" && <Button variant='contained' sx={{ margin: 1 }}
             onClick={handleSubmit}>
             {"Register"}
+          </Button>}
+
+          {props.formBehaviour.type === "logout" && <Button variant='contained' sx={{ margin: 1 }}
+            onClick={handleSubmit}>
+            {"Logout"}
           </Button>}
 
           <Button variant='contained' sx={{

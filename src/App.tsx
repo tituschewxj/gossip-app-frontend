@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage"
 import Navbar from "./components/Navbar"
 // import { useEffect, useState } from 'react'
 import { Route, Routes } from "react-router-dom"
-import LoginPage from "./pages/LoginPage"
+import AuthenticationPage from "./pages/AuthenticationPage"
 import EditPage from "./pages/EditPage"
 import ThreadPage from "./pages/ThreadPage"
 import ProfilePage from "./pages/ProfilePage"
@@ -29,7 +29,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<AuthenticationPage authenticationOperation="login"/>} />
+          <Route path="/logout" element={<AuthenticationPage authenticationOperation="logout"/>} />
+          <Route path="/register" element={<AuthenticationPage authenticationOperation="register"/>} />
           {/* <Route path="/edit/:id" element={<PostEditor post={{}}/>} /> */}
           <Route path="/posts/:post_id" element={<ThreadPage />} />
           <Route path="/new_post" element={<EditPage />} />
