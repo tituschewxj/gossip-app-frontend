@@ -34,9 +34,36 @@ export function initForumComment(options?: Partial<ForumComment>): ForumComment 
 export function initForumUser(options?: Partial<ForumUser>): ForumUser {
     const defaults: ForumUser = {
         type: "user",
+        // username: "",
+        email: "",
+        password: "",
+    }
+    return {
+        ...defaults,
+        ...options,
+    }
+}
+
+export function initForumRegister(options?: Partial<ForumRegister>): ForumRegister {
+    const defaults: ForumRegister = {
+        type: "register",
         username: "",
         email: "",
-        temp_password: "",
+        password: "",
+        confirm_password: "",
+    }
+    return {
+        ...defaults,
+        ...options,
+    }
+}
+
+export function initForumProfile(options?: Partial<ForumProfile>): ForumProfile {
+    const defaults: ForumProfile = {
+        type: "profile",
+        username: "",
+        email: "",
+        description: "",
     }
     return {
         ...defaults,

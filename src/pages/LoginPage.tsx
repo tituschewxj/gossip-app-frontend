@@ -2,38 +2,60 @@ import React from 'react'
 import axios from '../api/axios'
 
 import DefaultFormCard from '../components/DefaultFormCard'
-import { initForumUser } from '../types/typeDefaults'
+import { initForumRegister, initForumUser } from '../types/typeDefaults'
 
 function LoginPage() {
 
-  function handleSubmit() {
+  function handleLogin() {
     // testing code
-    // https://github.com/DakotaLMartinez/rails-devise-jwt-tutorial#add-respond_with-using-fast_jsonapi-method
-    // axios.post('signup', {
-    //   user: {
-    //     email: "test@test.com",
-    //     password: "password",
-    //   },
-    // }).then((res) => {
-    //   if (res.ok) {
-    //     console.log(res.headers.get("authorization");
-    //     localStorage.setItem("token", res.headers.get("authoriazation"));
-    //     return res.json();
-    //   } else {
-    //     throw new Error(res);
-    //   }
-    // })
-    // .then((json) => console.dir(json))
-    // .catch((err) => console.error(err));
-
-
-
-
+    // https://github.com/DakotaLMartinez/rails-devise-jwt-tutorial
+    // login
+    axios.post('login', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      user: {
+        email: "test@test.com",
+        password: "password",
+      },
+    }).then((res: any) => {
+      // console.log(res)
+      console.log(res.data)
+      // console.log(res.headers.get("Authorization"));
+      localStorage.setItem("token", res.headers.get("Authorization"));
+      // console.log("sucessfully logged in")
+    }).catch((err) => console.error(err));
   }
+  function handleLogout() {
+    axios.delete('logout', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem("token"),
+      },
+    }).then((res: any) => {
+      console.log(res.data)
+    }).catch((err) => console.error(err));
+  }
+  function handleSignup() {
+    axios.post('signup', {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      user: {
+        email: "tessts@test.com",
+        password: "password",
+      },
+    }).then((res: any) => {
+      console.log(res.data)
+      localStorage.setItem("token", res.headers.get("Authorization"))
+    }).catch((err) => console.error(err));
+  }
+
+
   return (
     <DefaultFormCard formBehaviour={{
       type: 'login',
-      handleSubmit: handleSubmit,
+      handleSubmit: handleSignup,
       handleCancel: undefined,
       handleDelete: undefined,
       handleAfterSubmit: undefined

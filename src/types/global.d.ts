@@ -6,10 +6,10 @@ declare global {
 
     type ForumObject = ForumPost | ForumObject | ForumTag | ForumUser
 
-    type ForumObjectType = "post" | "comment" | "tag" | "user"
+    type ForumObjectType = "post" | "comment" | "tag" | "user" | "profile" | "register"
 
     type ForumPost = {
-        type: "post"
+        static type: "post"
         id?: number
         title: string
         content: string
@@ -18,7 +18,7 @@ declare global {
         author: string
     }
     type ForumComment = {
-        type: "comment"
+        static type: "comment"
         id?: number
         content: string
         author: string
@@ -27,15 +27,15 @@ declare global {
         post_id?: number
     }
     type ForumTag = {
-        type: "tag"
+        static type: "tag"
         id: number
         name: string
     }
     type ForumUser = {
-        type: "user"
+        // used to sign in and manage jwt tokens
+        static type: "user" 
         email: string
-        username: string
-        temp_password: string
+        password: string
         encrypted_password?: string
         reset_password_token?: string
         reset_password_sent_at?: string
@@ -43,6 +43,19 @@ declare global {
         created_at?: string
         updated_at?: string
         jti?: string
+    }
+    type ForumRegister = {
+        type: "register"
+        email: string
+        username: string
+        password: string
+        confirm_password: string
+    }
+    type ForumProfile = {
+        type: "profile"
+        username: string
+        email: string
+        description: string
     }
 
     type FormBehaviourType = "edit" | "new" | "login" | "register"
@@ -62,6 +75,8 @@ declare global {
         handleClose: Function
     }
 
+    type MutateOperation = 'create' | 'update' | 'delete'
+    
     // type ForumObject = PostObject | CommentObject
 
     // type PostObject = {

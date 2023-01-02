@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom"
 import LoginPage from "./pages/LoginPage"
 import EditPage from "./pages/EditPage"
 import ThreadPage from "./pages/ThreadPage"
+import ProfilePage from "./pages/ProfilePage"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/new_post" element={<EditPage />} />
         <Route path="/posts/:post_id/edit" element={<EditPage />} />
         <Route path="/comments/:comment_id/edit" element={<EditPage />} />
+        {/* <Route path="/profile/:username" element={<ProfilePage />} />  */}
         {/* react router: dynamic segment */}
         <Route path="*" element={<h1>Not found</h1>} />
       </Routes>

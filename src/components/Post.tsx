@@ -63,7 +63,7 @@ function Post(props: { forumPost: ForumPost }) {
           }
         />
         <CardContent>
-          <Typography variant="body1" >
+          <Typography component="span" variant="body1" >
             <pre style={{ fontFamily: 'inherit', whiteSpace: 'pre-wrap' }}>
               {props.forumPost.content}
             </pre>

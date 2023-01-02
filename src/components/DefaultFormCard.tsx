@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Box, Button, Card, Container, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, Container, Typography } from '@mui/material'
 
 import { AxiosResponse } from 'axios'
 
-import axios from '../api/axios'
+import { useMutation } from 'react-query'
+
+// import axios from '../api/axios'
 import DefaultDialog from './DefaultDialog'
 import useFormHeader from '../hooks/useFormHeader'
-import DefaultTextField from './DefaultTextField'
+import DefaultFormCardTextFields from './Form/DefaultFormCardTextFields'
+import { initForumPost } from '../types/typeDefaults'
+import { mutateForumObject } from '../api/forumApi'
 
 function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: ForumObject }) {
-  const [forumObject, setForumObject] = useState<ForumObject>({} as ForumObject)
+  const [forumObject, setForumObject] = useState<ForumObject>(initForumPost() as ForumObject)
   // const [title, setTitle] = useState<string>()
   // const [content, setContent] = useState<string>()
   const formHeader = useFormHeader({ formBehaviourType: props.formBehaviour.type, forumObjectType: props.forumObject.type })
@@ -21,11 +25,10 @@ function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: For
 
   useEffect(() => {
     setForumObject(props.forumObject)
-    // console.log(props.forumObject)
-  }, [props.forumObject, props.formBehaviour])
+  }, [props.forumObject])
 
-  const defaultResponse = (res: AxiosResponse) => {
-    console.log(res)
+  const defaultResponse = () => {
+    // console.log(res)
     if (props.formBehaviour.handleAfterSubmit) {
       props.formBehaviour.handleAfterSubmit()
       return
@@ -38,42 +41,36 @@ function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: For
     setErrorVisible(true)
   }
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault()
+  const { mutate } = useMutation(async (props: { forumObject: ForumObject, mutateOperation: MutateOperation }) => {
+    return mutateForumObject(props.forumObject, props.mutateOperation)
+  }, {
+    onSuccess: () => {
+      console.log('success')
+      defaultResponse()
+    },
+    onError: (err: AxiosResponse) => {
+      defaultCatch(err)
+    }
+  })
+
+  const handleSubmit = () => {
+    // console.log(`${typeof forumObject}_${forumObject.id ? 'edit' : 'new'}`)
     if (props.formBehaviour.handleSubmit) {
       props.formBehaviour.handleSubmit()
       return
     }
-
-    if (forumObject.type === "comment") {
-      if (props.formBehaviour.type === "new") {
-        axios.post(`api/v1/posts/${forumObject.post_id}/comments`, forumObject)
-          .then(defaultResponse)
-          .catch(defaultCatch)
-      }
-      if (props.formBehaviour.type === "edit") {
-        axios.put(`api/v1/comments/${forumObject.id}`, forumObject)
-          .then(defaultResponse)
-          .catch(defaultCatch)
-      }
+    console.log(props.formBehaviour.type)
+    switch (props.formBehaviour.type) {
+      case 'new':
+        return mutate({ forumObject: forumObject, mutateOperation: 'create' })
+      case 'edit':
+        return mutate({ forumObject: forumObject, mutateOperation: 'update' })
+      default:
+        break;
     }
-    if (forumObject.type === "post") {
-      if (props.formBehaviour.type === "new") {
-        axios.post(`api/v1/posts`, forumObject)
-          .then(defaultResponse)
-          .catch(defaultCatch)
-      }
-      if (props.formBehaviour.type === "edit") {
-        axios.put(`api/v1/posts/${forumObject.id}`, forumObject)
-          .then(defaultResponse)
-          .catch(defaultCatch)
-      }
-    }
-    // if (!errorVisible) navigate(-1) // redirect to previous page
   }
 
-  const handleCancel = (e: React.SyntheticEvent) => {
-    e.preventDefault()
+  const handleCancel = () => {
     if (props.formBehaviour.handleCancel) {
       props.formBehaviour.handleCancel()
     } else {
@@ -82,23 +79,11 @@ function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: For
   }
 
   const handleDelete = () => {
-    if (forumObject.type === "comment") {
-      axios.delete(`api/v1/comments/${forumObject.id}`)
-        .then(defaultResponse)
-        .catch(defaultCatch)
-    }
-    if (forumObject.type === "post") {
-      axios.delete(`api/v1/posts/${forumObject.id}`)
-        .then(defaultResponse)
-        .catch(defaultCatch)
-    }
-    // console.log(forumObject)
-    // if (!errorVisible) navigate(-1)
+    mutate({ forumObject: forumObject, mutateOperation: 'delete' })
   }
 
   const handleDeleteConfirmationDialog = () => {
     setDeleteConfirmationDialogVisible(true)
-    // handleDelete()
   }
   return (
     <Container>
@@ -108,42 +93,7 @@ function DefaultFormCard(props: { formBehaviour: FormBehaviour, forumObject: For
             {formHeader}
           </Typography>
         </Box>}
-        <DefaultTextField
-          isVisible={forumObject.hasOwnProperty("title")}
-          textFieldProps={{
-            label: 'Title',
-            value: forumObject.title,
-            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForumObject({ ...forumObject, title: e.target.value }),
-          }} />
-        <DefaultTextField
-          isVisible={forumObject.hasOwnProperty("content")}
-          textFieldProps={{
-            label: 'Content',
-            value: forumObject.content,
-            multiline: true,
-            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForumObject({ ...forumObject, content: e.target.value }),
-          }} />
-          <DefaultTextField
-          isVisible={forumObject.hasOwnProperty("username")}
-          textFieldProps={{
-            label: 'Username',
-            value: forumObject.username,
-            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForumObject({ ...forumObject, username: e.target.value }),
-          }} />
-          <DefaultTextField
-          isVisible={forumObject.hasOwnProperty("email")}
-          textFieldProps={{
-            label: 'Email',
-            value: forumObject.email,
-            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForumObject({ ...forumObject, email: e.target.value }),
-          }} />
-          <DefaultTextField
-          isVisible={forumObject.hasOwnProperty("temp_password")}
-          textFieldProps={{
-            label: 'Password',
-            value: forumObject.temp_password,
-            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForumObject({ ...forumObject, temp_password: e.target.value }),
-          }} />
+        <DefaultFormCardTextFields forumObject={forumObject} onChangeSetState={setForumObject} />
 
 
         {/* Buttons */}
