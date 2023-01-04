@@ -8,7 +8,7 @@ type TextFieldProps = {
     multiline?: boolean,
 }
 
-function DefaultTextField(props: { isVisible?: boolean, textFieldProps: TextFieldProps }) {
+function DefaultTextField(props: { errorMsg?: string, isVisible?: boolean, textFieldProps: TextFieldProps }) {
     // the default text field for input fields in DefaultFormCard
     return (
         <>
@@ -19,6 +19,8 @@ function DefaultTextField(props: { isVisible?: boolean, textFieldProps: TextFiel
                     minRows={props.textFieldProps.multiline ? 3 : undefined}
                     value={props.textFieldProps.value}
                     fullWidth
+                    error={props.errorMsg !== undefined && props.errorMsg !== ''}
+                    helperText={props.errorMsg}
                     onChange={(e) => props.textFieldProps.onChange(e)}
                 />
             </Box>}

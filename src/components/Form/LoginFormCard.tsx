@@ -1,4 +1,5 @@
-import { Box } from '@mui/material'
+import { Alert, Box } from '@mui/material'
+import AlertTitle from '@mui/material/AlertTitle'
 import React, { useState } from 'react'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -13,48 +14,56 @@ function LoginFormCard(props: { handleCancel: Function, handleSubmitSuccess: Fun
     const { mutate: loginMutate } = useMutation(async (forumUser: ForumUser) => userLogin(forumUser), {
         onSuccess: () => {
             props.handleSubmitSuccess()
+        },
+        onError: () => {
+            setError(true)
         }
     })
     const navigate = useNavigate()
     const [forumUser, setForumUser] = useState(initForumUser())
-    // const formContext: FormContext = {
-    //     forumObject: forumPost,
-    //     setForumObject: setForumPost,
-    //     formBehaviour: {
-    //         type: 'login',
-    //         handleSubmit: () => {
-    //             loginMutate(forumPost)
-    //         },
-    //         handleSubmitSuccess: props.handleSubmitSuccess,
-    //         handleCancel: props.handleCancel,
-    //     }
-    // }
+    const [error, setError] = useState(false)
+    const [emailError, setEmailError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
+
+    const handleSubmit = () => {
+        setEmailError(forumUser.email === '' ? 'Email cannot be empty' : '')
+        setPasswordError(forumUser.password === '' ? 'Password cannot be empty' : '')
+        if (forumUser.email !== '' && forumUser.password !== '') {
+            loginMutate(forumUser)
+            return
+        }
+    }
+
     return (
-        // <FormContext.Provider value={formContext}>
-            <DefaultFormCard formHeader='Login'>
-                <>
-                    <DefaultTextField
-                        textFieldProps={{
-                            label: 'Email',
-                            value: forumUser.email,
-                            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+        <DefaultFormCard formHeader='Login'>
+            <>
+                <DefaultTextField
+                    errorMsg={emailError}
+                    textFieldProps={{
+                        label: 'Email',
+                        value: forumUser.email,
+                        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                             setForumUser({ ...forumUser, email: e.target.value }),
-                        }} />
-                    <DefaultTextField
-                        textFieldProps={{
-                            label: 'Password',
-                            value: forumUser.password,
-                            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                    }} />
+                <DefaultTextField
+                    errorMsg={passwordError}
+                    textFieldProps={{
+                        label: 'Password',
+                        value: forumUser.password,
+                        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                             setForumUser({ ...forumUser, password: e.target.value }),
-                        }} />
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <DefaultButton onClick={() => loginMutate(forumUser)} text='Login' />
-                        <DefaultButton onClick={() => navigate('/register')} text='Go to register' />
-                        <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
-                    </Box>
-                </>
-            </DefaultFormCard>
-        // </FormContext.Provider>
+                    }} />
+                {error && <Alert severity='error' sx={{ margin: 1 }}>
+                    <AlertTitle>Error occured</AlertTitle>
+                    Invalid email or password
+                </Alert>}
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <DefaultButton onClick={handleSubmit} text='Login' />
+                    <DefaultButton onClick={() => navigate('/register')} text='Go to register' />
+                    <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
+                </Box>
+            </>
+        </DefaultFormCard>
     )
 }
 

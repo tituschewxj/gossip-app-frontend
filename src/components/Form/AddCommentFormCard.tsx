@@ -25,20 +25,7 @@ function AddCommentFormCard(props: { handleCancel: Function, handleSubmitSuccess
         username && setForumComment({ ...forumComment, author: username })
     }, [username])
 
-    // const formContext: FormContext = {
-    //     forumObject: forumComment,
-    //     setForumObject: setForumComment,
-    //     formBehaviour: {
-    //         type: 'new',
-    //         handleSubmit: () => {
-    //             addMutate(forumComment)
-    //         },
-    //         handleSubmitSuccess: props.handleSubmitSuccess,
-    //         handleCancel: props.handleCancel,
-    //     }
-    // }
     return (
-        // <FormContext.Provider value={formContext}>
         <DefaultFormCard formHeader='Create Comment'>
             <>
                 <DefaultTextField
@@ -55,7 +42,6 @@ function AddCommentFormCard(props: { handleCancel: Function, handleSubmitSuccess
                 </Box>
             </>
         </DefaultFormCard>
-        // </FormContext.Provider>
     )
 }
 

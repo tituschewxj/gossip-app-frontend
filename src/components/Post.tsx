@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Card from '@mui/material/Card'
@@ -9,25 +9,24 @@ import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined'
 import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
+// import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
+// import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 // import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 
 import moment from 'moment'
 
 import DefaultIconButton from './DefaultIconButton'
-// import axios from '../api/axios';
+import { useQuery } from 'react-query'
+import { getTagsByPostId } from '../api/forumApi'
 
 function Post(props: { forumPost: ForumPost }) {
   const navigate = useNavigate()
-
-  // const handleDelete = () => {
-  //   axios.delete(`api/v1/posts/${props.forumPost.id}`)
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err))
-  // }
-  // useEffect(() => {
-  //   console.log(props.forumPost.content)
-  // })
-
+  const [postTags, setPostTags] = useState<ForumTag[]>()
+  useQuery(`get_tag_for_post_${props.forumPost.id}`, () => getTagsByPostId(parseInt(`${props.forumPost.id}`)), {
+    onSuccess: (res) => {
+      setPostTags(res)
+    }
+  })
   return (
     <Container sx={{ marginTop: 1 }}>
       <Card>
@@ -72,7 +71,7 @@ function Post(props: { forumPost: ForumPost }) {
 
         <CardActions>
           <ButtonGroup>
-            <Tooltip title="Like">
+            {/* <Tooltip title="Like">
               <IconButton><ThumbUpOutlinedIcon /></IconButton>
             </Tooltip>
             <Tooltip title="Dislike">
@@ -82,21 +81,20 @@ function Post(props: { forumPost: ForumPost }) {
               <IconButton onClick={() => { console.log("add comment") }}>
                 <AddCommentOutlinedIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <DefaultIconButton tooltipTitle='Edit Post'
               onClick={() => navigate(`/posts/${props.forumPost.id}/edit`)}
               icon={<EditOutlinedIcon />} />
             <DefaultIconButton tooltipTitle='View Post'
               onClick={() => navigate(`/posts/${props.forumPost.id}`)}
               icon={<RemoveRedEyeOutlinedIcon />} />
-            {/* <DefaultIconButton tooltipTitle='Delete Post'
-              onClick={handleDelete}
-              icon={<DeleteOutlineOutlinedIcon />} /> */}
           </ButtonGroup>
-
-          <Chip label="random tag" />
+          {postTags?.map((tag: ForumTag) => {
+            return (<Chip key={tag.id} label={tag.name} />)
+          })}
+          {/* <Chip label="random tag" />
           <Chip label="random tag2" />
-          <Chip label="random tag3" />
+          <Chip label="random tag3" /> */}
         </CardActions>
       </Card>
     </Container>

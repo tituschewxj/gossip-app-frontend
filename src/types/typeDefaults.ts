@@ -10,6 +10,7 @@ export function initForumPost(options?: Partial<ForumPost>): ForumPost {
         // created_at: undefined,
         // updated_at: undefined,
         author: "default author",
+        tags: [],
     }
     return {
         ...defaults,
@@ -66,6 +67,27 @@ export function initForumProfile(options?: Partial<ForumProfile>): ForumProfile 
         username: "",
         // user_id: undefined,
         description: "",
+    }
+    return {
+        ...defaults,
+        ...options,
+    }
+}
+
+export function initForumTag(options?: Partial<ForumTag>): ForumTag {
+    const defaults: ForumTag = {
+        type: "tag",
+        name: '',
+    }
+    return {
+        ...defaults,
+        ...options,
+    }
+}
+export function initForumPostsTag(options?: Partial<ForumPostsTag>): ForumPostsTag {
+    const defaults: ForumPostsTag = {
+        type: "postsTag",
+        tag_name: ''
     }
     return {
         ...defaults,

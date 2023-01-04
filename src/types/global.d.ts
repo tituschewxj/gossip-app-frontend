@@ -2,8 +2,8 @@ export { };
 
 declare global {
 
-    type ForumObject = ForumPost | ForumObject | ForumTag | ForumUser | ForumProfile
-    type ForumObjectType = "post" | "comment" | "tag" | "user" | "profile" | "register"
+    type ForumObject = ForumPost | ForumObject | ForumTag | ForumUser | ForumProfile | ForumPostsTag
+    type ForumObjectType = "post" | "comment" | "tag" | "user" | "profile" | "register" | "postsTag"
     type ForumPost = {
         type: "post"
         id?: number
@@ -12,6 +12,7 @@ declare global {
         created_at?: string
         updated_at?: string
         author: string
+        tags: ForumTag[]
     }
     type ForumComment = {
         type: "comment"
@@ -24,8 +25,14 @@ declare global {
     }
     type ForumTag = {
         type: "tag"
-        id: number
+        id?: number
         name: string
+    }
+    type ForumPostsTag = {
+        type: "postsTag"
+        id?: number
+        post_id?: number
+        tag_name: string
     }
     type ForumUser = {
         // used for authentication and manage jwt tokens

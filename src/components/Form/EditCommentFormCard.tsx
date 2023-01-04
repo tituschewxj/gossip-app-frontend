@@ -17,41 +17,25 @@ function EditCommentFormCard(props: { forumComment: ForumComment, handleCancel: 
     const { mutate: deleteMutate } = useMutation(async (forumComment: ForumComment) => deleteComment(`${forumComment.id}`))
 
     const [forumComment, setForumComment] = useState(props.forumComment)
-    // const formContext: FormContext = {
-    //     forumObject: forumComment,
-    //     setForumObject: setForumComment,
-    //     formBehaviour: {
-    //         type: 'edit',
-    //         handleSubmit: () => {
-    //             updateMutate(forumComment)
-    //         },
-    //         handleSubmitSuccess: props.handleSubmitSuccess,
-    //         handleCancel: props.handleCancel,
-    //         handleDelete: () => {
-    //             deleteMutate(forumComment)
-    //         },
-    //     }
-    // }
+
     return (
-        // <FormContext.Provider value={formContext}>
-            <DefaultFormCard formHeader='Update Comment'>
-                <>
-                    <DefaultTextField
-                        textFieldProps={{
-                            label: 'Content',
-                            value: forumComment.content,
-                            multiline: true,
-                            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-                                setForumComment({ ...forumComment, content: e.target.value }),
-                        }} />
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <DefaultButton onClick={() => updateMutate(forumComment)} text='Update' />
-                        <DefaultButton onClick={() => deleteMutate(forumComment)} text='Delete' />
-                        <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
-                    </Box>
-                </>
-            </DefaultFormCard>
-        // </FormContext.Provider>
+        <DefaultFormCard formHeader='Update Comment'>
+            <>
+                <DefaultTextField
+                    textFieldProps={{
+                        label: 'Content',
+                        value: forumComment.content,
+                        multiline: true,
+                        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                            setForumComment({ ...forumComment, content: e.target.value }),
+                    }} />
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <DefaultButton onClick={() => updateMutate(forumComment)} text='Update' />
+                    <DefaultButton onClick={() => deleteMutate(forumComment)} text='Delete' />
+                    <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
+                </Box>
+            </>
+        </DefaultFormCard>
     )
 }
 
