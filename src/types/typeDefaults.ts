@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom"
+
 // type default values
 export function initForumPost(options?: Partial<ForumPost>): ForumPost {
     const defaults: ForumPost = {

@@ -1,16 +1,12 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 
-type JWTToken = {
-    exp: number
-}
-
 export const hasJWTExpired = (): boolean => {
     const token = localStorage.getItem('token')
     if (token) {
         const decoded = jwtDecode<JWTToken>(token)
-        const dateNow = new Date()
-        if (decoded.exp < dateNow.getTime()) {
+        const dateNow = new Date()  
+        if (decoded.exp * 1000 > dateNow.getTime()) {
             console.log('not expired')
             return false
         } else {

@@ -10,7 +10,9 @@ import CreateIcon from '@mui/icons-material/Create'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import NavigateIconButton from './DefaultIconButton'
-import { UserContext } from '../hooks/context'
+// import { UserContext } from '../hooks/context'
+import useLoginState from '../hooks/useLoginState'
+import useUserProfile from '../hooks/useUserProfile'
 
 const useStyles = makeStyles({
   // style for search bar
@@ -23,14 +25,18 @@ const useStyles = makeStyles({
 function Navbar() {
   const classes = useStyles()
   const navigate = useNavigate()
-  const { isLoggedIn, username } = useContext(UserContext)
+  const isLoggedIn = useLoginState()
+  const username = useUserProfile()?.username
 
   return (
     <AppBar position="sticky">
       <Toolbar>
         <Typography variant="h4" sx={{ flex: 1 }}>Gossip App</Typography>
         <NavigateIconButton icon={<HomeOutlinedIcon />} tooltipTitle={'Home'} onClick={() => navigate('/')} />
-        <NavigateIconButton icon={<CreateIcon />} tooltipTitle={'Create post'} onClick={() => navigate('/new_post')} />
+        <NavigateIconButton icon={<CreateIcon />} tooltipTitle={'Create post'} onClick={() => {
+          navigate('/new_post')
+          // navigate(0)
+      }} />
         <TextField
           className={classes.searchStyle}
           label="Search" variant='outlined'
@@ -39,7 +45,7 @@ function Navbar() {
           fullWidth
           sx={{ flex: 1 }}></TextField>
         {!isLoggedIn && <NavigateIconButton icon={<LoginOutlinedIcon />} tooltipTitle={'Login'} onClick={() => navigate('/login')} />}
-        {isLoggedIn && <NavigateIconButton icon={<AccountCircleOutlinedIcon />} tooltipTitle={'Profile'} onClick={() => navigate(`/profile/${username}`)} />}
+        {isLoggedIn && username && <NavigateIconButton icon={<AccountCircleOutlinedIcon />} tooltipTitle={'Profile'} onClick={() => navigate(`/profile/${username}`)} />}
       </Toolbar>
     </AppBar>
   )

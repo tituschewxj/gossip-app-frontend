@@ -8,11 +8,11 @@ type TextFieldProps = {
     multiline?: boolean,
 }
 
-function DefaultTextField(props: { isVisible: boolean, textFieldProps: TextFieldProps }) {
+function DefaultTextField(props: { isVisible?: boolean, textFieldProps: TextFieldProps }) {
     // the default text field for input fields in DefaultFormCard
     return (
         <>
-            {props.isVisible && <Box sx={{ margin: 1 }}>
+            {(props.isVisible ? true : props.isVisible === undefined) && <Box sx={{ margin: 1 }}>
                 <TextField
                     label={props.textFieldProps.label}
                     multiline={props.textFieldProps.multiline}

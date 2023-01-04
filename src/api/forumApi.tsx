@@ -83,4 +83,14 @@ export const mutateForumObject = async (forumObject: ForumObject, mutateOperatio
 export const addProfile = async (forumProfile: ForumProfile) => {
     return axios.post(`api/v1/profiles`, forumProfile)
 }
+export const getProfile = async (id: number): Promise<ForumProfile> => {
+    return axios.get(`api/v1/profiles/${id}`).then(res => res.data)
+}
+export const getProfileByUserId = async (id: number): Promise<ForumProfile> => {
+    return axios.get(`api/v1/profiles?user_id=${id}`).then(res => res.data)
+}
+export const getProfileByUsername = async (username: string): Promise<ForumProfile> => {
+    return axios.get(`api/v1/profiles?username=${username}`).then(res => res.data)
+}
+
 

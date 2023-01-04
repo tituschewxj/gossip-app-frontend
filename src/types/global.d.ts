@@ -2,12 +2,8 @@ export { };
 
 declare global {
 
-    type PostsDetails = PostDetails[]
-
     type ForumObject = ForumPost | ForumObject | ForumTag | ForumUser | ForumProfile
-
     type ForumObjectType = "post" | "comment" | "tag" | "user" | "profile" | "register"
-
     type ForumPost = {
         type: "post"
         id?: number
@@ -33,7 +29,7 @@ declare global {
     }
     type ForumUser = {
         // used for authentication and manage jwt tokens
-        type: "user" 
+        type: "user"
         id?: number
         email: string
         password: string
@@ -59,14 +55,47 @@ declare global {
         user_id?: number
     }
 
+    // FormBehaviour
+    type FormBehaviour = FormBehaviourEdit | FormBehaviourNew | FormBehaviourLogin | FormBehaviourRegister | FormBehaviourLogout
     type FormBehaviourType = "edit" | "new" | AuthenticationOperation
-    type FormBehaviour = {
-        type: FormBehaviourType
-        handleSubmit?: Function
-        handleCancel?: Function
-        handleDelete?: Function
-        handleAfterSubmit?: Function
+    type FormBehaviourEdit = {
+        type: 'edit'
+        handleSubmit: Function
+        handleSubmitSuccess: Function
+        handleCancel: Function
+        handleDelete: Function
     }
+    type FormBehaviourNew = {
+        type: 'new'
+        handleSubmit: Function
+        handleSubmitSuccess: Function
+        handleCancel: Function
+    }
+    type FormBehaviourLogin = {
+        type: 'login'
+        handleSubmit: Function
+        handleSubmitSuccess: Function
+        handleCancel: Function
+    }
+    type FormBehaviourRegister = {
+        type: 'register'
+        handleSubmit: Function
+        handleSubmitSuccess: Function
+        handleCancel: Function
+    }
+    type FormBehaviourLogout = {
+        type: 'logout'
+        handleSubmit: Function
+        handleSubmitSuccess: Function
+        handleCancel: Function
+    }
+    type FormContext = {
+        forumObject: ForumObject
+        setForumObject: Function<ForumObject>
+        formBehaviour: FormBehaviour
+    }
+
+
     type DialogBehaviour = {
         type: "confirmation" | "error" | "success"
         handleConfirmation?: Function
@@ -85,52 +114,9 @@ declare global {
         username?: string
         setUsername?: Function
     }
-    
-    // type ForumObject = PostObject | CommentObject
 
-    // type PostObject = {
-    //     type: "post"
-    //     id?: number
-    //     author?: string
-    //     updated_at?: string
-    //     details?: PostDetails
-    // }
-    // type CommentObject = {
-    //     type: "comment"
-    //     id?: number
-    //     author?: string
-    //     updated_at?: string
-    //     details?: CommentDetails
-    // }
-
-    // type PostDetails = {
-    //     title: string
-    //     content: string
-    //     tags: Tag[]
-    //     // likes: int
-    //     // dislikes: int
-    // }
-
-    // type CommentDetails = {
-    //     post_id: int
-    //     content: string
-    //     // likes?: int
-    //     // dislikes?: int
-    // }
-
-    // type Tag = {
-    //     id: number
-    //     name: string
-    // }
-
-    // user defined type guards
-    // function isCommentObject(forumObject: CommentDetails | PostDetails): value is CommentDetails {
-    //     return value.hasOwnProperty('comment')
-    // }
-    // function isPostDetails(forumObject: CommentDetails | PostDetails): value is PostDetails {
-    //     return value.hasOwnProperty('post')
-    // }
-
-    // database types based of json file
-
+    type JWTToken = {
+        exp: number
+        sub: string
+    }
 }

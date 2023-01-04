@@ -48,6 +48,7 @@ export const userSignup = async (forumUser: ForumUser) => {
         console.log(res.data)
         localStorage.setItem("token", res.headers.get("Authorization"))
         updateJWTToken()
+        return res.data.data.id // user_id
       }).catch((err) => console.error(err));
 }
 
@@ -55,12 +56,16 @@ export const updateJWTToken = (): void => {
     if (localStorage.getItem('token')) {
         if (hasJWTExpired()) {
             localStorage.removeItem('token')
+            localStorage.removeItem('username')
+            localStorage.removeItem('loggedIn')
             axios.defaults.headers.common['Authorization'] = undefined
         } else {
             // adds the jwt token to the headers
             axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
         }
     } else {
+        localStorage.removeItem('username')
+        localStorage.removeItem('loggedIn')
         axios.defaults.headers.common['Authorization'] = undefined
     }
 }

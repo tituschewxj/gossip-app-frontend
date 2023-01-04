@@ -8,8 +8,10 @@ import DefaultFormCard from '../components/DefaultFormCard'
 import Container from '@mui/material/Container'
 import { initForumComment } from '../types/typeDefaults'
 import DefaultDialog from '../components/DefaultDialog'
-import { useQuery } from 'react-query'
-import { getComments, getPost } from '../api/forumApi'
+import { useMutation, useQuery } from 'react-query'
+import { addComment, getComments, getPost } from '../api/forumApi'
+import { FormContext, UserContext } from '../hooks/context'
+import AddCommentFormCard from '../components/Form/AddCommentFormCard'
 
 function ThreadPage() {
   const [isAddingComment, setIsAddingComment] = useState<boolean>(false)
@@ -19,19 +21,21 @@ function ThreadPage() {
   const { data: forumPost } = useQuery('post', () => getPost(`${post_id}`))
   const { data: comments } = useQuery('post_comments', () => getComments(`${post_id}`))
 
+
+  // const { mutate } = useMutation(async (forumComment: ForumComment) => addComment(forumComment))
+
   return (
     <Container sx={{ marginTop: 3 }}>
       {forumPost && <Post forumPost={forumPost} />}
       {!isAddingComment && <Button onClick={() => setIsAddingComment(true)}>add comment</Button>}
       {isAddingComment && <Box sx={{ margin: 1 }}>
-        <DefaultFormCard formBehaviour={{
-          type: "new",
-          handleAfterSubmit: () => {
+        <AddCommentFormCard
+          handleCancel={() => setIsAddingComment(false)}
+          handleSubmitSuccess={() => {
             setIsAddingComment(false)
             window.location.reload()
-          },
-          handleCancel: () => setIsAddingComment(false),
-        }} forumObject={initForumComment({ post_id: parseInt(`${post_id}`) })} />
+          }}
+        />
       </Box>}
       {comments && comments
         .filter(comment => comment.post_id === forumPost?.id)
