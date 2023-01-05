@@ -71,17 +71,6 @@ function Post(props: { forumPost: ForumPost }) {
 
         <CardActions>
           <ButtonGroup>
-            {/* <Tooltip title="Like">
-              <IconButton><ThumbUpOutlinedIcon /></IconButton>
-            </Tooltip>
-            <Tooltip title="Dislike">
-              <IconButton><ThumbDownOutlinedIcon /></IconButton>
-            </Tooltip>
-            <Tooltip title="Add Comment">
-              <IconButton onClick={() => { console.log("add comment") }}>
-                <AddCommentOutlinedIcon />
-              </IconButton>
-            </Tooltip> */}
             <DefaultIconButton tooltipTitle='Edit Post'
               onClick={() => navigate(`/posts/${props.forumPost.id}/edit`)}
               icon={<EditOutlinedIcon />} />
@@ -92,9 +81,6 @@ function Post(props: { forumPost: ForumPost }) {
           {postTags?.map((tag: ForumTag) => {
             return (<Chip key={tag.id} label={tag.name} />)
           })}
-          {/* <Chip label="random tag" />
-          <Chip label="random tag2" />
-          <Chip label="random tag3" /> */}
         </CardActions>
       </Card>
     </Container>

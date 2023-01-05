@@ -109,3 +109,6 @@ export const getTagsByPostId = async (post_id: number) => {
 export const addPostTag = async (postsTag: ForumPostsTag) => {
     return axios.post(`api/v1/posts_tags`, postsTag)
 }
+export const deletePostsTagByPostIdAndTagName = async (post_id: number, tag_name: string) => {
+    return axios.get(`api/v1/posts_tags?state=destroy&post_id=${post_id}&tag_name=${tag_name}`)
+}

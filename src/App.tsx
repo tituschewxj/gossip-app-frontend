@@ -12,6 +12,7 @@ import ThreadPage from "./pages/ThreadPage"
 import ProfilePage from "./pages/ProfilePage"
 // import { UserContext } from "./hooks/context"
 import { updateJWTToken } from "./api/authenticationApi"
+import ResultsPage from "./pages/ResultsPage"
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
           <Route path="/posts/:post_id/edit" element={<EditPage editType="edit"/>} />
           <Route path="/comments/:comment_id/edit" element={<EditPage editType="edit"/>} />
           <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/results/:query" element={<ResultsPage />} />
           {/* react router: dynamic segment */}
           <Route path="*" element={<h1>Not found</h1>} />
         </Routes>

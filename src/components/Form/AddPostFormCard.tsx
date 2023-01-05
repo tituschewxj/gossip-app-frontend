@@ -12,7 +12,7 @@ import DefaultTextField from './DefaultTextField';
 function AddPostFormCard(props: { handleCancel: Function, handleSubmitSuccess: Function }) {
     const { mutate: addMutate } = useMutation(async (forumPost: ForumPost) => addPost(forumPost), {
         onSuccess: (res) => {
-            console.log(res)
+            // console.log(res)
             addPostsTagsMutate(chips.map((chip: string) => initForumPostsTag({ tag_name: chip, post_id: res.data.id })))
         }
     })
@@ -20,7 +20,7 @@ function AddPostFormCard(props: { handleCancel: Function, handleSubmitSuccess: F
         return postTags.map(postTag => addPostTag(postTag))
     }, {
         onSuccess: (res) => {
-            console.log(res)
+            // console.log(res)
             props.handleSubmitSuccess()
         }
     })
@@ -29,7 +29,7 @@ function AddPostFormCard(props: { handleCancel: Function, handleSubmitSuccess: F
     const [chips, setChips] = useState<string[]>([])
 
     useEffect(() => {
-        console.log(`username: ${username}`)
+        // console.log(`username: ${username}`)
         username && setForumPost({ ...forumPost, author: username })
     }, [username])
 
