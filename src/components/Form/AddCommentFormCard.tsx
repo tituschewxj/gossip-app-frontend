@@ -6,7 +6,7 @@ import { addComment } from '../../api/forumApi'
 // import { FormContext } from '../../hooks/context';
 import useUserProfile from '../../hooks/useUserProfile';
 import { initForumComment } from '../../types/typeDefaults'
-import DefaultFormCard from '../DefaultFormCard';
+import DefaultFormCard from './DefaultFormCard';
 import DefaultButton from './DefaultButton';
 import DefaultTextField from './DefaultTextField';
 

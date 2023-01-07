@@ -1,9 +1,11 @@
 import jwtDecode from 'jwt-decode'
 import { useEffect, useState } from 'react'
 import {  getProfileByUserId } from '../api/forumApi'
+import { initForumProfile } from '../types/typeDefaults'
 
 export default function useUserProfile() {
-    const [forumProfile, setForumProfile] = useState<ForumProfile>()
+    // gets the current user's profile using the jwt token
+    const [forumProfile, setForumProfile] = useState<ForumProfile>(initForumProfile())
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {

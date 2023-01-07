@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { userSignup } from '../../api/authenticationApi'
 import { addProfile } from '../../api/forumApi'
 import { initForumRegister } from '../../types/typeDefaults'
-import DefaultFormCard from '../DefaultFormCard'
+import DefaultFormCard from './DefaultFormCard'
 import DefaultButton from './DefaultButton'
 import DefaultTextField from './DefaultTextField'
 
@@ -37,7 +37,7 @@ function RegisterFormCard(props: { handleCancel: Function, handleSubmitSuccess: 
     }
 
     return (
-        <DefaultFormCard formHeader='Login'>
+        <DefaultFormCard formHeader='Register'>
             <>
                 <DefaultTextField
                     textFieldProps={{

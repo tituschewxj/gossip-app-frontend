@@ -7,7 +7,7 @@ import { Form, Navigate, useLocation, useNavigate, useParams } from 'react-route
 import { Container } from '@mui/system'
 import { useQuery } from 'react-query'
 
-import DefaultFormCard from '../components/DefaultFormCard'
+import DefaultFormCard from '../components/Form/DefaultFormCard'
 import DefaultDialog from '../components/DefaultDialog'
 import { initForumPost } from '../types/typeDefaults'
 import { getComment, getPost } from '../api/forumApi'
@@ -15,9 +15,10 @@ import { FormContext } from '../hooks/context'
 import EditCommentFormCard from '../components/Form/EditCommentFormCard'
 import EditPostFormCard from '../components/Form/EditPostFormCard'
 import AddPostFormCard from '../components/Form/AddPostFormCard'
+import EditProfile from '../components/Form/EditProfile'
 
 
-function EditPage(props: {editType: FormBehaviourType}) {
+function EditPage(props: { editType: FormBehaviourType }) {
   // Page for editing a post/comment
   // const [forumObject, setForumObject] = useState<ForumObject>({} as ForumObject)
   // const [editType, setEditType] = useState<FormBehaviourType>('edit')
@@ -43,44 +44,47 @@ function EditPage(props: {editType: FormBehaviourType}) {
     }
   })
   const [forumObject, setForumObject] = useState<ForumObject>();
-  
-  
-  const formContext: FormContext = {
-    forumObject: forumObject,
-    setForumObject: setForumObject,
-    formBehaviour: {
-      type: props.editType,
-      handleSubmit: () => { },
-      handleSubmitSuccess: () => { },
-      handleCancel: () => navigate(-1),
-      handleDelete: () => { },
-    },
-  }
+
+
+  // const formContext: FormContext = {
+  //   forumObject: forumObject,
+  //   setForumObject: setForumObject,
+  //   formBehaviour: {
+  //     type: props.editType,
+  //     handleSubmit: () => { },
+  //     handleSubmitSuccess: () => { },
+  //     handleCancel: () => navigate(-1),
+  //     handleDelete: () => { },
+  //   },
+  // }
 
   return (
-    <FormContext.Provider value={formContext}>
-      <Container sx={{ marginTop: 3 }}>
-        {forumObject &&
-          <>
-            {forumObject.type === 'comment' && props.editType === 'edit' && <EditCommentFormCard
-              forumComment={forumObject}
-              handleCancel={() => navigate(-1)}
-              handleSubmitSuccess={() => { }} />}
-            {forumObject.type === 'post' && props.editType === 'edit' && <EditPostFormCard
-              forumPost={forumObject}
-              handleCancel={() => navigate(-1)}
-              handleSubmitSuccess={() => navigate('/')} />}
-            {forumObject.type === 'post' && props.editType === 'new' && <AddPostFormCard
-              handleCancel={() => navigate(-1)}
-              handleSubmitSuccess={() => navigate('/')} />}
-          </>
-        }
-        <DefaultDialog open={errorVisible} dialogBehaviour={{
-          type: 'error',
-          handleClose: () => setErrorVisible(false),
-        }} />
-      </Container>
-    </FormContext.Provider>
+    // <FormContext.Provider value={formContext}>
+    <Container sx={{ marginTop: 3 }}>
+      {forumObject &&
+        <>
+          {forumObject.type === 'comment' && props.editType === 'edit' && <EditCommentFormCard
+            forumComment={forumObject}
+            handleCancel={() => navigate(-1)}
+            handleSubmitSuccess={() => { }} />}
+          {forumObject.type === 'post' && props.editType === 'edit' && <EditPostFormCard
+            forumPost={forumObject}
+            handleCancel={() => navigate(-1)}
+            handleSubmitSuccess={() => navigate('/')} />}
+          {forumObject.type === 'post' && props.editType === 'new' && <AddPostFormCard
+            handleCancel={() => navigate(-1)}
+            handleSubmitSuccess={() => navigate('/')} />}
+          {props.editType === 'edit_profile' && <EditProfile
+            handleCancel={() => navigate(-1)}
+            handleSubmitSuccess={() => navigate('/')} />}
+        </>
+      }
+      <DefaultDialog open={errorVisible} dialogBehaviour={{
+        type: 'error',
+        handleClose: () => setErrorVisible(false),
+      }} />
+    </Container>
+    // </FormContext.Provider>
   )
 }
 

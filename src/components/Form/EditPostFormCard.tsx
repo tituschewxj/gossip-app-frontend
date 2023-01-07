@@ -7,7 +7,7 @@ import { forEachChild } from 'typescript';
 import { addPostTag, deletePost, deletePostsTagByPostIdAndTagName, getTagsByPostId, updatePost } from '../../api/forumApi'
 import { initForumPostsTag } from '../../types/typeDefaults';
 // import { FormContext } from '../../hooks/context';
-import DefaultFormCard from '../DefaultFormCard';
+import DefaultFormCard from './DefaultFormCard';
 import DefaultButton from './DefaultButton';
 import DefaultTextField from './DefaultTextField';
 
@@ -29,7 +29,7 @@ function EditPostFormCard(props: { forumPost: ForumPost, handleCancel: Function,
     }, {
         onSuccess: (res) => {
             // console.log(res)
-            props.handleSubmitSuccess()
+            // props.handleSubmitSuccess()
         }
     })
     const { mutate: deleteMutate } = useMutation(async (forumPost: ForumPost) => deletePost(`${forumPost.id}`))

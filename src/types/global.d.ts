@@ -60,11 +60,12 @@ declare global {
         username: string
         description: string
         user_id?: number
+        id?: number
     }
 
     // FormBehaviour
     type FormBehaviour = FormBehaviourEdit | FormBehaviourNew | FormBehaviourLogin | FormBehaviourRegister | FormBehaviourLogout
-    type FormBehaviourType = "edit" | "new" | AuthenticationOperation
+    type FormBehaviourType = "edit" | "new" | AuthenticationOperation | "edit_profile"
     type FormBehaviourEdit = {
         type: 'edit'
         handleSubmit: Function

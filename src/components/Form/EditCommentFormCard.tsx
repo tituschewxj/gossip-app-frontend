@@ -4,7 +4,7 @@ import { useMutation } from 'react-query'
 
 import { deleteComment, updateComment } from '../../api/forumApi'
 // import { FormContext } from '../../hooks/context';
-import DefaultFormCard from '../DefaultFormCard';
+import DefaultFormCard from './DefaultFormCard';
 import DefaultButton from './DefaultButton';
 import DefaultTextField from './DefaultTextField';
 

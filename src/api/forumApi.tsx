@@ -8,6 +8,18 @@ export const getPosts = async (): Promise<ForumPost[]> => {
 export const getPostsByPostId = async (tag_id: number) => {
     return axios.post(`api/v1/posts?tag_id=${tag_id}`).then(res => res.data)
 }
+export const getPostsByProfileId = async (profile_id: number) => {
+    return axios.get(`api/v1/posts?profile_id=${profile_id}`).then(res => res.data)
+}
+export const getPostsByUsername = async (username: string) => {
+    return axios.get(`api/v1/posts?username=${username}`).then(res => res.data)
+}
+export const getPostsByTagName = async (tag_name: string) => {
+    return axios.get(`api/v1/posts?tag_name=${tag_name}`).then(res => res.data)
+}
+export const getPostsByTagNames = async (tag_names: string[]) => {
+    return axios.get(`api/v1/posts?tag_names[]=${tag_names.join(`&tag_names[]=`)}`).then(res => res.data)
+}
 export const getPost = async (id: string): Promise<ForumPost> => {
     return axios.get(`api/v1/posts/${id}`)
         .then((res) => res.data)
@@ -25,13 +37,19 @@ export const deletePost = async (id: string) => {
 
 
 // Comments
-export const getComments = async (id: string): Promise<ForumComment[]> => {
-    return axios.get(`api/v1/posts/${id}/comments`).then((res) => res.data)
+export const getComments = async (post_id: string): Promise<ForumComment[]> => {
+    return axios.get(`api/v1/posts/${post_id}/comments`).then((res) => res.data)
 }
 export const getComment = async (id: string): Promise<ForumComment> => {
     return axios.get(`api/v1/comments/${id}`)
         .then((res) => res.data)
         .then((res) => { return { ...res, type: 'comment' } })
+}
+export const getCommentsByProfileId = async (profile_id: number) => {
+    return axios.get(`api/v1/profiles/${profile_id}?state=get_comments`).then(res => res.data)
+}
+export const getCommentsByUsername = async (username: string) => {
+    return axios.get(`api/v1/profiles?username=${username}&state=get_comments`).then(res => res.data)
 }
 export const addComment = async (comment: ForumComment) => {
     return axios.post(`api/v1/posts/${comment.post_id}/comments`, comment)
@@ -52,10 +70,6 @@ export const deleteComment = async (id: string) => {
 //         default:
 //             break;
 //     }
-// }
-
-// export const defaultCatch = (err: AxiosResponse) => {
-//     console.log(err)
 // }
 
 // export const mutateForumObject = async (forumObject: ForumObject, mutateOperation: MutateOperation) => {
@@ -90,6 +104,9 @@ export const getProfileByUserId = async (user_id: number): Promise<ForumProfile>
 }
 export const getProfileByUsername = async (username: string): Promise<ForumProfile> => {
     return axios.get(`api/v1/profiles?username=${username}`).then(res => res.data)
+}
+export const updateProfile = async (profile: ForumProfile) => {
+    return axios.patch(`api/v1/profiles/${profile.id}`, profile)
 }
 
 // Tags

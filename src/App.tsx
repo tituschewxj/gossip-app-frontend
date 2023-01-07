@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import './App.css'
 // import axios from "./api/axios"
 import HomePage from "./pages/HomePage"
-import Navbar from "./components/Navbar"
+import Navbar from "./components/Navbar/Navbar"
 // import { useEffect, useState } from 'react'
 import { Route, Routes } from "react-router-dom"
 import AuthenticationPage from "./pages/AuthenticationPage"
@@ -48,15 +48,17 @@ function App() {
           <Route path="/login" element={<AuthenticationPage authenticationOperation="login"/>} />
           <Route path="/logout" element={<AuthenticationPage authenticationOperation="logout"/>} />
           <Route path="/register" element={<AuthenticationPage authenticationOperation="register"/>} />
-          {/* <Route path="/edit/:id" element={<PostEditor post={{}}/>} /> */}
+
           <Route path="/posts/:post_id" element={<ThreadPage />} />
           <Route path="/new_post" element={<EditPage editType="new"/>} />
           <Route path="/posts/:post_id/edit" element={<EditPage editType="edit"/>} />
           <Route path="/comments/:comment_id/edit" element={<EditPage editType="edit"/>} />
+
+          <Route path="/edit_profile" element={<EditPage editType="edit_profile"/>} />
           <Route path="/profile/:username" element={<ProfilePage />} />
-          <Route path="/results/:query" element={<ResultsPage />} />
-          {/* react router: dynamic segment */}
-          <Route path="*" element={<h1>Not found</h1>} />
+          <Route path="/search" element={<ResultsPage />} />
+          
+          <Route path="*" element={<p>Not found</p>} />
         </Routes>
       {/* </UserContext.Provider> */}
     </>

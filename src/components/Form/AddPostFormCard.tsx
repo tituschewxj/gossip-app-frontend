@@ -5,7 +5,7 @@ import { useMutation } from 'react-query'
 import { addPost, addPostTag } from '../../api/forumApi'
 import useUserProfile from '../../hooks/useUserProfile';
 import { initForumPost, initForumPostsTag } from '../../types/typeDefaults'
-import DefaultFormCard from '../DefaultFormCard';
+import DefaultFormCard from './DefaultFormCard';
 import DefaultButton from './DefaultButton';
 import DefaultTextField from './DefaultTextField';
 

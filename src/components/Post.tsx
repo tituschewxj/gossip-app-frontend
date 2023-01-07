@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import { Avatar, ButtonGroup, CardActions, CardHeader, Chip, Container, Grid, IconButton, Tooltip, Typography } from '@mui/material'
+import { Avatar, Button, ButtonGroup, CardActionArea, CardActions, CardHeader, Chip, Container, Grid, IconButton, Tooltip, Typography } from '@mui/material'
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined'
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined'
 import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined'
@@ -19,7 +19,7 @@ import DefaultIconButton from './DefaultIconButton'
 import { useQuery } from 'react-query'
 import { getTagsByPostId } from '../api/forumApi'
 
-function Post(props: { forumPost: ForumPost }) {
+function Post(props: { forumPost: ForumPost, disabledClickable?: boolean }) {
   const navigate = useNavigate()
   const [postTags, setPostTags] = useState<ForumTag[]>()
   useQuery(`get_tag_for_post_${props.forumPost.id}`, () => getTagsByPostId(parseInt(`${props.forumPost.id}`)), {
@@ -29,7 +29,12 @@ function Post(props: { forumPost: ForumPost }) {
   })
   return (
     <Container sx={{ marginTop: 1 }}>
-      <Card>
+      <Card onClick={(e) => { console.log(e) }} >
+        <CardActionArea onClick={(e) => {
+          navigate(`/posts/${props.forumPost.id}`)
+          console.log(e.target)
+      
+        }} disabled={props.disabledClickable !== undefined}>
         <CardHeader
           avatar={
             <Avatar></Avatar>
@@ -69,14 +74,15 @@ function Post(props: { forumPost: ForumPost }) {
           </Typography>
         </CardContent>
 
+        </CardActionArea>
         <CardActions>
           <ButtonGroup>
             <DefaultIconButton tooltipTitle='Edit Post'
               onClick={() => navigate(`/posts/${props.forumPost.id}/edit`)}
               icon={<EditOutlinedIcon />} />
-            <DefaultIconButton tooltipTitle='View Post'
-              onClick={() => navigate(`/posts/${props.forumPost.id}`)}
-              icon={<RemoveRedEyeOutlinedIcon />} />
+            {/* <DefaultIconButton tooltipTitle='View Post'
+                onClick={() => navigate(`/posts/${props.forumPost.id}`)}
+                icon={<RemoveRedEyeOutlinedIcon />} /> */}
           </ButtonGroup>
           {postTags?.map((tag: ForumTag) => {
             return (<Chip key={tag.id} label={tag.name} />)
