@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { Box, Card, Container, Typography } from '@mui/material'
+import { Alert, AlertTitle, Box, Card, Container, Typography } from '@mui/material'
 
-export default function DefaultFormCard(props: { formHeader?: string, children?: React.ReactElement}) {
+export default function DefaultFormCard(props: { formHeader?: string, children?: React.ReactElement, errorMsg?: string, buttons?: React.ReactElement }) {
   return (
     <Container>
       <Card>
@@ -12,6 +12,13 @@ export default function DefaultFormCard(props: { formHeader?: string, children?:
           </Typography>
         </Box>}
         {props.children}
+        {props.errorMsg && props.errorMsg !== '' && <Alert severity='error' sx={{ margin: 1 }}>
+          <AlertTitle>Error occured</AlertTitle>
+          {props.errorMsg}
+        </Alert>}
+        {props.buttons && <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            {props.buttons}
+        </Box>}
       </Card>
     </Container>
   )

@@ -9,7 +9,6 @@ function ProfilePosts() {
     const { username } = useParams()
     const { data: forumPosts, isLoading } = useQuery('get_search_results', () => getPostsByUsername(`${username}`), {
         enabled: username !== undefined,
-        keepPreviousData: true  
     })
 
     return (

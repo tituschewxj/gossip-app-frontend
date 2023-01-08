@@ -38,28 +38,29 @@ function EditPostFormCard(props: { forumPost: ForumPost, handleCancel: Function,
             deletePostsTagByPostIdAndTagName(props.forumPost.id, tagName)
         }
     })
-    
+
 
 
     const [initTags, setInitTags] = useState<Set<string>>(new Set())
     useQuery(`get_tag_for_post_${props.forumPost.id}`, () => getTagsByPostId(parseInt(`${props.forumPost.id}`)), {
-      onSuccess: (res: ForumTag[]) => {
-        setInitTags(new Set(res.map(tag => tag.name)))
-        setChips(res.map(tag => tag.name))
-      }
+        onSuccess: (res: ForumTag[]) => {
+            setInitTags(new Set(res.map(tag => tag.name)))
+            setChips(res.map(tag => tag.name))
+        }
     })
 
     const [forumPost, setForumPost] = useState(props.forumPost)
     const [chips, setChips] = useState<string[]>([])
 
     const handleNewChip = (newChips: string[]) => {
-        newChips = newChips.map(chip => chip[0].toUpperCase() + chip.substring(1).toLowerCase())
+        // newChips = newChips.map(chip => chip[0].toUpperCase() + chip.substring(1).toLowerCase())
         setChips([...new Set(newChips)] as string[])
     }
     return (
         <DefaultFormCard formHeader='Update Post'>
             <>
                 <DefaultTextField
+                    type=''
                     textFieldProps={{
                         label: 'Title',
                         value: forumPost.title,
@@ -67,6 +68,7 @@ function EditPostFormCard(props: { forumPost: ForumPost, handleCancel: Function,
                             setForumPost({ ...forumPost, title: e.target.value }),
                     }} />
                 <DefaultTextField
+                    type=''
                     textFieldProps={{
                         label: 'Content',
                         value: forumPost.content,

@@ -7,7 +7,6 @@ import { BrowserRouter } from "react-router-dom"
 // import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { UserContext } from './hooks/context'
 
 // const theme = createTheme({
 //   palette: {

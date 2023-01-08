@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useMutation } from 'react-query'
 
 import { deleteComment, updateComment } from '../../api/forumApi'
-// import { FormContext } from '../../hooks/context';
+
 import DefaultFormCard from './DefaultFormCard';
 import DefaultButton from './DefaultButton';
 import DefaultTextField from './DefaultTextField';
@@ -22,6 +22,7 @@ function EditCommentFormCard(props: { forumComment: ForumComment, handleCancel: 
         <DefaultFormCard formHeader='Update Comment'>
             <>
                 <DefaultTextField
+                    type=''
                     textFieldProps={{
                         label: 'Content',
                         value: forumComment.content,
@@ -35,7 +36,7 @@ function EditCommentFormCard(props: { forumComment: ForumComment, handleCancel: 
                     <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
                 </Box>
             </>
-        </DefaultFormCard>
+        </DefaultFormCard >
     )
 }
 

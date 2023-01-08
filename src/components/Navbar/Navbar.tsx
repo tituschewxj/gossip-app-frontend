@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { AppBar, Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material'
+import { AppBar, Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Link, Box } from '@mui/material'
 
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
@@ -32,18 +32,20 @@ function Navbar() {
   const { mutate: logout } = useMutation(async () => userLogout())
 
   return (
-    <AppBar position="sticky" >
-      <Toolbar >
-        <Typography variant="h4" sx={{ flex: 1 }}>Gossip App</Typography>
-        <NavigateIconButton icon={<HomeOutlinedIcon />} tooltipTitle={'Home'} onClick={() => navigate('/')} />
-        <NavigateIconButton icon={<CreateIcon />} tooltipTitle={'Create post'} onClick={() => {
-          navigate('/new_post')
-          // navigate(0)
-        }} />
-        <Searchbar />
+    <AppBar position="sticky">
+      <Toolbar sx={{ display: 'flex', justifyContent: 'center' }} >
+        <Link href='/' color='inherit' underline='none'>
+          <Tooltip title='Home'>
+            <Typography variant="h4" sx={{ flex: 1 }}>Gossip App</Typography>
+          </Tooltip>
+        </Link>
 
-        {!isLoggedIn && 
-         <>
+        <Box sx={{ flex: 1, justifyContent: 'center', display: 'flex' }}>
+          <Searchbar />
+        </Box>
+
+        {!isLoggedIn &&
+          <>
             <Tooltip title="Login/Register">
               <IconButton
                 onClick={handleClick}
@@ -52,7 +54,7 @@ function Navbar() {
                 aria-expanded={open ? 'true' : undefined}
               >
                 <LoginOutlinedIcon />
-                </IconButton>
+              </IconButton>
             </Tooltip>
 
             <Menu id='login-menu' anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -67,6 +69,7 @@ function Navbar() {
             </Menu>
           </>
         }
+
         {isLoggedIn && username &&
           <>
             <Tooltip title="Account settings">
@@ -90,8 +93,13 @@ function Navbar() {
                 handleClose()
               }}>Update Profile</MenuItem>
               <MenuItem onClick={() => {
+                navigate('/new_post')
+                handleClose()
+              }}>New Post</MenuItem>
+              <MenuItem onClick={() => {
                 logout()
                 handleClose()
+                navigate('/')
               }}>Logout</MenuItem>
             </Menu>
           </>

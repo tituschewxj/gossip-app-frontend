@@ -108,6 +108,9 @@ export const getProfileByUsername = async (username: string): Promise<ForumProfi
 export const updateProfile = async (profile: ForumProfile) => {
     return axios.patch(`api/v1/profiles/${profile.id}`, profile)
 }
+export const getUsernames = async () => {
+    return axios.get(`api/v1/profiles?attribute=username`).then(res => res.data)
+}
 
 // Tags
 export const getTags = async () => {

@@ -1,8 +1,10 @@
 import React from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { useErrorState } from '../hooks/useErrorState'
 
 function DefaultDialog(props: { open: boolean, dialogBehaviour: DialogBehaviour }) {
-    // default dialog for confirmation
+    const { errorMsg } = useErrorState()
+    // default dialog for confirmation/error
     return (
         <Dialog
             open={props.open}
@@ -12,14 +14,16 @@ function DefaultDialog(props: { open: boolean, dialogBehaviour: DialogBehaviour 
                 {props.dialogBehaviour.type === "confirmation" && "Confirm delete?"}
                 {props.dialogBehaviour.type === "error" && "Error occured!"}
             </DialogTitle>
-            {/* <DialogContent>
+            {errorMsg !== '' && <DialogContent>
                 <DialogContentText>
-                    {"Some text"}
+                    {errorMsg}
                 </DialogContentText>
-            </DialogContent> */}
+            </DialogContent>}
             <DialogActions >
-                {props.dialogBehaviour.type === "confirmation" && <Button onClick={() => props.dialogBehaviour.handleConfirmation?.()}>{"Delete"}</Button>}
-                {props.dialogBehaviour.type === "confirmation" && <Button onClick={() => props.dialogBehaviour.handleClose()}>{"Cancel"}</Button>}
+                {props.dialogBehaviour.type === "confirmation" && <>
+                    <Button onClick={() => props.dialogBehaviour.handleConfirmation?.()}>{"Delete"}</Button>
+                    <Button onClick={() => props.dialogBehaviour.handleClose()}>{"Cancel"}</Button>
+                </>}
                 {props.dialogBehaviour.type === "error" && <Button onClick={() => props.dialogBehaviour.handleClose()}>{"Close"}</Button>}
             </DialogActions>
         </Dialog>

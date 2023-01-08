@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 import { Autocomplete, Box, IconButton, InputAdornment, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import { makeStyles } from '@mui/styles';
-import { useQuery } from 'react-query';
-import { getTags } from '../../api/forumApi';
-import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
-import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
+import { getTags } from '../../api/forumApi';
 
 const useStyles = makeStyles({
     // style for search bar
@@ -54,7 +53,7 @@ function Searchbar() {
     }, [location, tags])
 
     return (
-        <Box sx={{ width: '50%', margin: 1 }}>
+        <Box sx={{ width: '60%', margin: 1 }}>
             <Autocomplete
                 options={allTags}
                 limitTags={5}

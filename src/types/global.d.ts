@@ -12,6 +12,7 @@ declare global {
         created_at?: string
         updated_at?: string
         author: string
+        profile_id?: number
         tags: ForumTag[]
     }
     type ForumComment = {
@@ -22,6 +23,7 @@ declare global {
         created_at?: string
         updated_at?: string
         post_id?: number
+        profile_id?: number
     }
     type ForumTag = {
         type: "tag"

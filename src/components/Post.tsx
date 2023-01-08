@@ -1,47 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import { Avatar, Button, ButtonGroup, CardActionArea, CardActions, CardHeader, Chip, Container, Grid, IconButton, Tooltip, Typography } from '@mui/material'
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined'
-import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined'
-import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined'
+import { Avatar, Box, ButtonGroup, CardActions, CardHeader, Chip, Container, Grid, Link, Typography } from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
-// import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
-// import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
-// import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 
 import moment from 'moment'
 
 import DefaultIconButton from './DefaultIconButton'
 import { useQuery } from 'react-query'
 import { getTagsByPostId } from '../api/forumApi'
+import useUserProfile from '../hooks/useUserProfile'
+import DefaultButton from './Form/DefaultButton'
 
-function Post(props: { forumPost: ForumPost, disabledClickable?: boolean }) {
+function Post(props: { forumPost: ForumPost, disabledClickable?: boolean, enableButtons?: boolean }) {
   const navigate = useNavigate()
+  const userProfile = useUserProfile()
   const [postTags, setPostTags] = useState<ForumTag[]>()
-  useQuery(`get_tag_for_post_${props.forumPost.id}`, () => getTagsByPostId(parseInt(`${props.forumPost.id}`)), {
+  useQuery(`get_tags_for_post_${props.forumPost.id}`, () => getTagsByPostId(parseInt(`${props.forumPost.id}`)), {
     onSuccess: (res) => {
       setPostTags(res)
     }
   })
+
   return (
     <Container sx={{ marginTop: 1 }}>
-      <Card onClick={(e) => { console.log(e) }} >
-        <CardActionArea onClick={(e) => {
-          navigate(`/posts/${props.forumPost.id}`)
-          console.log(e.target)
-      
-        }} disabled={props.disabledClickable !== undefined}>
+      <Card>
         <CardHeader
           avatar={
             <Avatar></Avatar>
           }
           title={
             <Typography variant='h5' align={'left'}>
-              {props.forumPost.title}
+              <Link underline='none' href={`/posts/${props.forumPost.id}`} color='inherit'>
+                {props.forumPost.title}
+              </Link>
             </Typography>
           }
 
@@ -49,17 +43,19 @@ function Post(props: { forumPost: ForumPost, disabledClickable?: boolean }) {
             <>
               <Grid container display="flex">
                 <Grid item>
-                  <Typography
-                    variant="subtitle2"
-                    align={'left'}>
-                    {props.forumPost.author && `By ${props.forumPost.author}`}
-                  </Typography>
+                  <Link href={`/profile/${props.forumPost.author}`} underline='none' color='inherit'>
+                    <Typography
+                      variant="subtitle2"
+                      align={'left'}>
+                      {props.forumPost.author && `By ${props.forumPost.author}`}
+                    </Typography>
+                  </Link>
                 </Grid>
                 <Grid item sx={{ flex: 1 }}>
                   <Typography
                     variant="subtitle2"
                     align={'right'}>
-                    {props.forumPost.updated_at && `Updated at ${moment(props.forumPost.updated_at).format('L')}`}
+                    {props.forumPost.updated_at && `Updated at ${moment(props.forumPost.updated_at).format('D/M/YYYY')}`}
                   </Typography>
                 </Grid>
               </Grid>
@@ -73,23 +69,26 @@ function Post(props: { forumPost: ForumPost, disabledClickable?: boolean }) {
             </pre>
           </Typography>
         </CardContent>
-
-        </CardActionArea>
-        <CardActions>
-          <ButtonGroup>
+        
+        <CardActions sx={{ display: 'flex', flexDirection: 'row' }}>
+          {userProfile && userProfile.id === props.forumPost.profile_id && <ButtonGroup>
             <DefaultIconButton tooltipTitle='Edit Post'
               onClick={() => navigate(`/posts/${props.forumPost.id}/edit`)}
               icon={<EditOutlinedIcon />} />
-            {/* <DefaultIconButton tooltipTitle='View Post'
-                onClick={() => navigate(`/posts/${props.forumPost.id}`)}
-                icon={<RemoveRedEyeOutlinedIcon />} /> */}
-          </ButtonGroup>
+          </ButtonGroup>}
           {postTags?.map((tag: ForumTag) => {
-            return (<Chip key={tag.id} label={tag.name} />)
+            return (
+              <Link key={`post_${props.forumPost.id}-tag_${tag.id}`} href={`/search?tags=${tag.name}`} underline='none' color='inherit'>
+                <Chip label={tag.name} />
+              </Link>
+            )
           })}
+          {props.enableButtons && <Box sx={{ textAlign: 'right', flex: 1 }}>
+            <DefaultButton onClick={() => navigate(`/posts/${props.forumPost.id}`)} text={'View post'}></DefaultButton>
+          </Box>}
         </CardActions>
       </Card>
-    </Container>
+    </Container >
   );
 }
 

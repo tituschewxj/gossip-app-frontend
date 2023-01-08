@@ -1,10 +1,8 @@
-import { Alert, Box } from '@mui/material'
-import AlertTitle from '@mui/material/AlertTitle'
 import React, { useState } from 'react'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+
 import { userLogin } from '../../api/authenticationApi'
-// import { FormContext } from '../../hooks/context'
 import { initForumUser } from '../../types/typeDefaults'
 import DefaultFormCard from './DefaultFormCard'
 import DefaultButton from './DefaultButton'
@@ -26,6 +24,7 @@ function LoginFormCard(props: { handleCancel: Function, handleSubmitSuccess: Fun
     const [passwordError, setPasswordError] = useState('')
 
     const handleSubmit = () => {
+        setError(false)
         setEmailError(forumUser.email === '' ? 'Email cannot be empty' : '')
         setPasswordError(forumUser.password === '' ? 'Password cannot be empty' : '')
         if (forumUser.email !== '' && forumUser.password !== '') {
@@ -35,9 +34,16 @@ function LoginFormCard(props: { handleCancel: Function, handleSubmitSuccess: Fun
     }
 
     return (
-        <DefaultFormCard formHeader='Login'>
+        <DefaultFormCard formHeader='Login' errorMsg={error ? 'Invalid email or password' : ''} buttons={
+            <>
+                <DefaultButton onClick={handleSubmit} text='Login' />
+                <DefaultButton onClick={() => navigate('/register')} text='Go to register' />
+                <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
+            </>
+        }>
             <>
                 <DefaultTextField
+                    type='email'
                     errorMsg={emailError}
                     textFieldProps={{
                         label: 'Email',
@@ -46,6 +52,7 @@ function LoginFormCard(props: { handleCancel: Function, handleSubmitSuccess: Fun
                             setForumUser({ ...forumUser, email: e.target.value }),
                     }} />
                 <DefaultTextField
+                    type='password'
                     errorMsg={passwordError}
                     textFieldProps={{
                         label: 'Password',
@@ -53,15 +60,6 @@ function LoginFormCard(props: { handleCancel: Function, handleSubmitSuccess: Fun
                         onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                             setForumUser({ ...forumUser, password: e.target.value }),
                     }} />
-                {error && <Alert severity='error' sx={{ margin: 1 }}>
-                    <AlertTitle>Error occured</AlertTitle>
-                    Invalid email or password
-                </Alert>}
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <DefaultButton onClick={handleSubmit} text='Login' />
-                    <DefaultButton onClick={() => navigate('/register')} text='Go to register' />
-                    <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
-                </Box>
             </>
         </DefaultFormCard>
     )

@@ -26,19 +26,24 @@ function AddCommentFormCard(props: { handleCancel: Function, handleSubmitSuccess
     }, [username])
 
     return (
-        <DefaultFormCard formHeader='Create Comment'>
+        <DefaultFormCard>
             <>
                 <DefaultTextField
+                    type=''
                     textFieldProps={{
-                        label: 'Content',
+                        label: 'Add comment',
                         value: forumComment.content,
                         multiline: true,
+                        minRows: 1,
                         onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                             setForumComment({ ...forumComment, content: e.target.value }),
                     }} />
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     <DefaultButton onClick={() => addMutate(forumComment)} text='Create' />
-                    <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
+                    <DefaultButton onClick={() => {
+                        setForumComment({ ...forumComment, content: '' })
+                        props.handleCancel()
+                    }} text='Cancel' backgroundColor='secondary' />
                 </Box>
             </>
         </DefaultFormCard>

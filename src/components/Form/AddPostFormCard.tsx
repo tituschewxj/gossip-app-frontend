@@ -34,13 +34,14 @@ function AddPostFormCard(props: { handleCancel: Function, handleSubmitSuccess: F
     }, [username])
 
     const handleNewChip = (newChips: string[]) => {
-        newChips = newChips.map(chip => chip[0].toUpperCase() + chip.substring(1).toLowerCase())
+        // newChips = newChips.map(chip => chip[0].toUpperCase() + chip.substring(1).toLowerCase())
         setChips([...new Set(newChips)] as string[])
     }
     return (
         <DefaultFormCard formHeader='Create Post'>
             <>
                 <DefaultTextField
+                    type=''
                     textFieldProps={{
                         label: 'Title',
                         value: forumPost.title,
@@ -48,6 +49,7 @@ function AddPostFormCard(props: { handleCancel: Function, handleSubmitSuccess: F
                             setForumPost({ ...forumPost, title: e.target.value }),
                     }} />
                 <DefaultTextField
+                    type=''
                     textFieldProps={{
                         label: 'Content',
                         value: forumPost.content,

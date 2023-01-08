@@ -11,20 +11,28 @@ function EditProfile(props: { handleCancel: Function, handleSubmitSuccess: Funct
     const initUserProfile = useUserProfile()
     const [userProfile, setUserProfile] = useState<ForumProfile>()
     const { mutate: updateMutate } = useMutation(async (userProfile: ForumProfile) => updateProfile(userProfile), {
-        onSuccess: (res) => {
+        onSuccess: () => {
             // adds the newly created tags and removed deleted tags into the database
             props.handleSubmitSuccess()
         }
     })
+    const [usernameError, setUsernameError] = useState<boolean>(false)
     useEffect(() => {
-        console.log(initUserProfile)
         setUserProfile(initUserProfile)
     }, [initUserProfile])
+    const handleSubmit = () => {
+        setUsernameError(userProfile?.username === '')
+        if (userProfile && userProfile.username !== '') {
+            updateMutate(userProfile)
+        }
+    }
     return (
         <>
             {userProfile && <DefaultFormCard formHeader='Update Profile'>
                 <>
                     <DefaultTextField
+                        type=''
+                        emptyError={usernameError}
                         textFieldProps={{
                             label: 'Username',
                             value: userProfile.username,
@@ -32,6 +40,7 @@ function EditProfile(props: { handleCancel: Function, handleSubmitSuccess: Funct
                                 setUserProfile({ ...userProfile, username: e.target.value }),
                         }} />
                     <DefaultTextField
+                        type=''
                         textFieldProps={{
                             label: 'Description',
                             value: userProfile.description,
@@ -40,7 +49,7 @@ function EditProfile(props: { handleCancel: Function, handleSubmitSuccess: Funct
                                 setUserProfile({ ...userProfile, description: e.target.value }),
                         }} />
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <DefaultButton onClick={() => updateMutate(userProfile)} text='Update' />
+                        <DefaultButton onClick={handleSubmit} text='Update' />
                         <DefaultButton onClick={props.handleCancel} text='Cancel' backgroundColor='secondary' />
                     </Box>
                 </>
