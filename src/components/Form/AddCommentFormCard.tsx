@@ -11,6 +11,7 @@ import { initForumComment } from "../../types/typeDefaults";
 import DefaultFormCard from "./DefaultFormCard";
 import DefaultButton from "./DefaultButton";
 import DefaultTextField from "./DefaultTextField";
+import useLoginState from "../../hooks/useLoginState";
 
 /**
  * Displays a Card where a comment can be added into.
@@ -31,22 +32,34 @@ export default function AddCommentFormCard(props: {
     }
   );
   const userProfileContextData = useContext(UserProfileContext);
-
+  const isLoggedIn = useLoginState();
   const [forumComment, setForumComment] = useState(
     initForumComment({ post_id: parseInt(`${post_id}`) })
   );
+  const [commentErrorMsg, setCommentErrorMsg] = useState<string>("");
   useEffect(() => {
     console.log(`username: ${userProfileContextData?.userProfile?.username}`);
     userProfileContextData?.userProfile?.username && setForumComment({ ...forumComment, author: userProfileContextData?.userProfile.username });
   }, [userProfileContextData]);
+
+  function handleSubmit() {
+    if (forumComment.content === "") {
+      setCommentErrorMsg("Comment cannot be empty");
+    } else {
+      setCommentErrorMsg("");
+      addMutate(forumComment)
+    }
+  }
 
   return (
     <DefaultFormCard>
       <>
         <DefaultTextField
           type=""
+          errorMsg={commentErrorMsg}
+          disabled={isLoggedIn ? false : true}
           textFieldProps={{
-            label: "Add comment",
+            label: isLoggedIn ? "Add comment" : "Log in to add a comment",
             value: forumComment.content,
             multiline: true,
             minRows: 1,
@@ -57,10 +70,12 @@ export default function AddCommentFormCard(props: {
         />
         <Box sx={{ display: "flex", justifyContent: "right" }}>
           <DefaultButton
-            onClick={() => addMutate(forumComment)}
+            disabled={isLoggedIn ? false : true}
+            onClick={() => handleSubmit()}
             text="Create"
           />
           <DefaultButton
+            disabled={isLoggedIn ? false : true}
             onClick={() => {
               setForumComment({ ...forumComment, content: "" });
               props.handleCancel();

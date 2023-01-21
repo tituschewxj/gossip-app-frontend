@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { useMutation } from "react-query";
-import { updateProfile } from "../../api/forumApi";
+import { useMutation, useQuery } from "react-query";
+import { getUsernames, updateProfile } from "../../api/forumApi";
 import { UserProfileContext } from "../../hooks/useUserProfile";
 import DefaultButton from "./DefaultButton";
 import DefaultFormCard from "./DefaultFormCard";
@@ -24,18 +24,36 @@ export default function EditProfile(props: {
       onSuccess: () => {
         // adds the newly created tags and removed deleted tags into the database
         props.handleSubmitSuccess();
+        userProfileContextData?.setUserProfile();
       },
     }
   );
-  const [usernameError, setUsernameError] = useState<boolean>(false);
+  const { data: usernames } = useQuery("get_usernames", () => getUsernames());
+
+ 
   useEffect(() => {
     if (userProfileContextData) {
       setUserProfile(userProfileContextData.userProfile);
     }
   }, [userProfileContextData]);
+
+  const [usernameError, setUsernameError] = useState<string>("");
   const handleSubmit = () => {
-    setUsernameError(userProfile?.username === "");
-    if (userProfile && userProfile.username !== "") {
+    let hasError = false;
+    if (userProfile?.username === "") {
+      setUsernameError("Username cannot be empty");
+      hasError = true;
+    } else if (
+      usernames.filter(
+        (username: string) => username === userProfile?.username
+      ).filter((username: string) => username !== userProfileContextData?.userProfile?.username).length !== 0
+    ) {
+      setUsernameError("Username taken");
+      hasError = true;
+    } else {
+      setUsernameError("");
+    }
+    if (!hasError && userProfile) {
       updateMutate(userProfile);
     }
   };
@@ -46,7 +64,7 @@ export default function EditProfile(props: {
           <>
             <DefaultTextField
               type=""
-              emptyError={usernameError}
+              errorMsg={usernameError}
               textFieldProps={{
                 label: "Username",
                 value: userProfile.username,

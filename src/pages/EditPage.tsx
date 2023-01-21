@@ -42,7 +42,7 @@ export default function EditPage(props: { editType: FormBehaviourType }) {
         {props.editType === "edit_profile" && (
           <EditProfile
             handleCancel={() => navigate(-1)}
-            handleSubmitSuccess={() => navigate(-1)}
+            handleSubmitSuccess={() => navigate("/")}
           />
         )}
       </>

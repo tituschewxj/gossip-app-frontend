@@ -49,7 +49,16 @@ function EditCommentFormCard(props: {
   );
 
   const [forumComment, setForumComment] = useState<ForumComment>();
+  const [commentErrorMsg, setCommentErrorMsg] = useState<string>("");
 
+  function handleSubmit() {
+    if (forumComment?.content === "") {
+      setCommentErrorMsg("Comment cannot be empty");
+    } else if (forumComment) {
+      setCommentErrorMsg("");
+      updateMutate(forumComment);
+    }
+  }
   return (
     <>
       {forumComment ?
@@ -57,6 +66,7 @@ function EditCommentFormCard(props: {
           <>
             <DefaultTextField
               type=""
+              errorMsg={commentErrorMsg}
               textFieldProps={{
                 label: "Content",
                 value: forumComment.content,
@@ -68,7 +78,7 @@ function EditCommentFormCard(props: {
             />
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <DefaultButton
-                onClick={() => updateMutate(forumComment)}
+                onClick={() => handleSubmit()}
                 text="Update"
               />
               <DefaultButton

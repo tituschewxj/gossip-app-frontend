@@ -10,10 +10,12 @@ export default function DefaultButton(props: {
   onClick: Function;
   text: string;
   backgroundColor?: string;
+  disabled?: boolean;
 }) {
   return (
     <Button
       variant="contained"
+      disabled={props.disabled}
       sx={{
         margin: 1,
         backgroundColor: props.backgroundColor

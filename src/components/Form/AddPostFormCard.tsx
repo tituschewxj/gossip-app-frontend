@@ -60,11 +60,35 @@ export default function AddPostFormCard(props: {
     // newChips = newChips.map(chip => chip[0].toUpperCase() + chip.substring(1).toLowerCase())
     setChips([...new Set(newChips)] as string[]);
   };
+
+  const [titleErrorMsg, setTitleErrorMsg] = useState<string>("")
+  const [contentErrorMsg, setContentErrorMsg] = useState<string>("")
+
+
+  function handleSubmit() {
+    let hasError = false;
+    if (forumPost.title === "") {
+      hasError = true;
+      setTitleErrorMsg("Title cannot be empty");
+    } else {
+      setTitleErrorMsg("")
+    }
+    if (forumPost.content === "") {
+      hasError = true;
+      setContentErrorMsg("Content cannot be empty");
+    } else {
+      setContentErrorMsg("");
+    }
+    if (!hasError) {
+      addMutate(forumPost);
+    }
+  }
   return (
     <DefaultFormCard formHeader="Create Post">
       <>
         <DefaultTextField
           type=""
+          errorMsg={titleErrorMsg}
           textFieldProps={{
             label: "Title",
             value: forumPost.title,
@@ -75,6 +99,7 @@ export default function AddPostFormCard(props: {
         />
         <DefaultTextField
           type=""
+          errorMsg={contentErrorMsg}
           textFieldProps={{
             label: "Content",
             value: forumPost.content,
@@ -93,7 +118,7 @@ export default function AddPostFormCard(props: {
           />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <DefaultButton onClick={() => addMutate(forumPost)} text="Create" />
+          <DefaultButton onClick={() => handleSubmit()} text="Create" />
           <DefaultButton
             onClick={props.handleCancel}
             text="Cancel"

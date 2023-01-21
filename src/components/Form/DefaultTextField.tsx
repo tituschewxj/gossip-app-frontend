@@ -21,6 +21,7 @@ export default function DefaultTextField(props: {
   textFieldProps: TextFieldProps;
   emptyError?: boolean;
   type: string;
+  disabled?: boolean;
 }) {
   // the default text field for input fields in DefaultFormCard
   const [errorMsg, setErrorMsg] = useState<string>();
@@ -40,6 +41,7 @@ export default function DefaultTextField(props: {
         <Box sx={{ margin: 1 }}>
           <TextField
             type={props.type}
+            disabled={props.disabled}
             label={props.textFieldProps.label}
             multiline={props.textFieldProps.multiline}
             minRows={

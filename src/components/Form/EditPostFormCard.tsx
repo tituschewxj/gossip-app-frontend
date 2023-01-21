@@ -92,12 +92,36 @@ export default function EditPostFormCard(props: {
     setChips([...new Set(newChips)] as string[]);
   };
 
+  const [titleErrorMsg, setTitleErrorMsg] = useState<string>("")
+  const [contentErrorMsg, setContentErrorMsg] = useState<string>("")
+
+
+  function handleSubmit() {
+    let hasError = false;
+    if (forumPost?.title === "") {
+      hasError = true;
+      setTitleErrorMsg("Title cannot be empty");
+    } else {
+      setTitleErrorMsg("");
+    }
+    if (forumPost?.content === "") {
+      hasError = true;
+      setContentErrorMsg("Content cannot be empty");
+    } else {
+      setContentErrorMsg("");
+    }
+    if (!hasError && forumPost) {
+      updateMutate(forumPost);
+    }
+  }
+
   return (
     <>
       {forumPost ? <DefaultFormCard formHeader="Update Post">
         <>
           <DefaultTextField
             type=""
+            errorMsg={titleErrorMsg}
             textFieldProps={{
               label: "Title",
               value: forumPost.title,
@@ -108,6 +132,7 @@ export default function EditPostFormCard(props: {
           />
           <DefaultTextField
             type=""
+            errorMsg={contentErrorMsg}
             textFieldProps={{
               label: "Content",
               value: forumPost.content,
@@ -127,7 +152,7 @@ export default function EditPostFormCard(props: {
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <DefaultButton
-              onClick={() => updateMutate(forumPost)}
+              onClick={() => handleSubmit()}
               text="Update"
             />
             <DefaultButton

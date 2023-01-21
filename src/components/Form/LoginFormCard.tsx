@@ -31,17 +31,31 @@ export default function LoginFormCard(props: {
   const navigate = useNavigate();
   const [forumUser, setForumUser] = useState(initForumUser());
   const [error, setError] = useState(false);
-  const [emailError, setEmailError] = useState("");
+  const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState("");
 
 
   const handleSubmit = () => {
     setError(false);
-    setEmailError(forumUser.email === "" ? "Email cannot be empty" : "");
-    setPasswordError(
-      forumUser.password === "" ? "Password cannot be empty" : ""
-    );
-    if (forumUser.email !== "" && forumUser.password !== "") {
+    let hasError = false;
+    if (forumUser.email === "") {
+      setEmailError("Email cannot be empty");
+      hasError = true;
+    } else if (!/^.+@.+$/.test(forumUser.email)) {
+      setEmailError("Invalid email");
+      hasError = true;
+    }else {
+      setEmailError("");
+    }
+
+    if (forumUser.password === "") {
+      setPasswordError("Password cannot be empty");
+      hasError = true;
+    } else {
+      setPasswordError("");
+    }
+
+    if (!hasError) {
       loginMutate(forumUser);
       return;
     }
