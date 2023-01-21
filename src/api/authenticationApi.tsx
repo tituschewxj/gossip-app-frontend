@@ -1,6 +1,11 @@
 import { AxiosResponse } from "axios";
 import axios, { hasJWTExpired } from "./axios";
 
+/**
+ * Logs in a user based on provided details
+ * @param forumUser 
+ * @returns 
+ */
 export const userLogin = async (forumUser: ForumUser) => {
   updateJWTToken();
   console.log(axios.defaults.headers.common["Authorization"]);
@@ -24,6 +29,10 @@ export const userLogin = async (forumUser: ForumUser) => {
     });
 };
 
+/**
+ * Logs out a user
+ * @returns 
+ */
 export const userLogout = async () => {
   return axios
     .delete("logout", {
@@ -39,6 +48,11 @@ export const userLogout = async () => {
     });
 };
 
+/**
+ * Registers a new user in the database
+ * @param forumUser 
+ * @returns 
+ */
 export const userSignup = async (forumUser: ForumUser) => {
   return axios
     .post("signup", {
@@ -58,12 +72,13 @@ export const userSignup = async (forumUser: ForumUser) => {
     });
 };
 
+/**
+ * Updates the JWT token stored in local storage
+ */
 export const updateJWTToken = (): void => {
   if (localStorage.getItem("token")) {
     if (hasJWTExpired()) {
       localStorage.removeItem("token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("loggedIn");
       axios.defaults.headers.common["Authorization"] = undefined;
     } else {
       // adds the jwt token to the headers
@@ -71,8 +86,6 @@ export const updateJWTToken = (): void => {
         localStorage.getItem("token");
     }
   } else {
-    localStorage.removeItem("username");
-    localStorage.removeItem("loggedIn");
     axios.defaults.headers.common["Authorization"] = undefined;
   }
 };

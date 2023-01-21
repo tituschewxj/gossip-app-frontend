@@ -1,5 +1,8 @@
 export {};
 
+/**
+ * Where most of the TypeScript types are defined.
+ */
 declare global {
   type ForumObject =
     | ForumPost
@@ -44,6 +47,7 @@ declare global {
     name: string;
   };
   type ForumPostsTag = {
+    // used to handle the relation between posts and tags
     type: "postsTag";
     id?: number;
     post_id?: number;
@@ -78,6 +82,7 @@ declare global {
     id?: number;
   };
   type ForumPostWithTags = {
+    // contains a post with it's related tag information
     type: "post_with_tags";
     post: ForumPost;
     tags: ForumTags[];
@@ -90,6 +95,7 @@ declare global {
     tags: ForumTag[][];
   };
   type PostsMeta = {
+    // the meta information of posts used for pagination
     totalPosts: number;
     postsPerPage: number;
   };
@@ -102,46 +108,11 @@ declare global {
     | FormBehaviourRegister
     | FormBehaviourLogout;
   type FormBehaviourType =
-    | "edit"
-    | "new"
-    | AuthenticationOperation
-    | "edit_profile";
-  type FormBehaviourEdit = {
-    type: "edit";
-    handleSubmit: Function;
-    handleSubmitSuccess: Function;
-    handleCancel: Function;
-    handleDelete: Function;
-  };
-  type FormBehaviourNew = {
-    type: "new";
-    handleSubmit: Function;
-    handleSubmitSuccess: Function;
-    handleCancel: Function;
-  };
-  type FormBehaviourLogin = {
-    type: "login";
-    handleSubmit: Function;
-    handleSubmitSuccess: Function;
-    handleCancel: Function;
-  };
-  type FormBehaviourRegister = {
-    type: "register";
-    handleSubmit: Function;
-    handleSubmitSuccess: Function;
-    handleCancel: Function;
-  };
-  type FormBehaviourLogout = {
-    type: "logout";
-    handleSubmit: Function;
-    handleSubmitSuccess: Function;
-    handleCancel: Function;
-  };
-  type FormContext = {
-    forumObject: ForumObject;
-    setForumObject: Function<ForumObject>;
-    formBehaviour: FormBehaviour;
-  };
+    | "edit_comment"
+    | "new_post"
+    | "edit_post"
+    | "edit_profile"
+    | AuthenticationOperation;
 
   type DialogBehaviour = {
     type: "confirmation" | "error" | "success";
@@ -151,16 +122,18 @@ declare global {
     handleClose: Function;
   };
 
-  type MutateOperation = "create" | "update" | "delete";
+  // unused
+  // type MutateOperation = "create" | "update" | "delete";
 
   type AuthenticationOperation = "login" | "register" | "logout";
 
-  type UserContext = {
-    isLoggedIn: boolean;
-    setIsLoggedIn?: Function;
-    username?: string;
-    setUsername?: Function;
-  };
+  // unused
+  // type UserContext = {
+  //   isLoggedIn: boolean;
+  //   setIsLoggedIn?: Function;
+  //   username?: string;
+  //   setUsername?: Function;
+  // };
 
   type JWTToken = {
     exp: number;

@@ -1,15 +1,23 @@
+import React, { useContext, useEffect, useState } from "react";
+
+import { useMutation } from "react-query";
+
 import { Box } from "@mui/material";
 import { MuiChipsInput } from "mui-chips-input";
-import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+
 import { addPost, addPostTag } from "../../api/forumApi";
-import useUserProfile from "../../hooks/useUserProfile";
+import { UserProfileContext } from "../../hooks/useUserProfile";
 import { initForumPost, initForumPostsTag } from "../../types/typeDefaults";
 import DefaultFormCard from "./DefaultFormCard";
 import DefaultButton from "./DefaultButton";
 import DefaultTextField from "./DefaultTextField";
 
-function AddPostFormCard(props: {
+/**
+ * Displays a card where posts can be added into
+ * @param props 
+ * @returns 
+ */
+export default function AddPostFormCard(props: {
   handleCancel: Function;
   handleSubmitSuccess: Function;
 }) {
@@ -37,16 +45,16 @@ function AddPostFormCard(props: {
       },
     }
   );
-  const username = useUserProfile()?.username;
+  const userProfileContextData = useContext(UserProfileContext);
   const [forumPost, setForumPost] = useState(
-    initForumPost({ author: username })
+    initForumPost({ author: userProfileContextData?.userProfile?.username })
   );
   const [chips, setChips] = useState<string[]>([]);
 
   useEffect(() => {
     // console.log(`username: ${username}`)
-    username && setForumPost({ ...forumPost, author: username });
-  }, [username]);
+    userProfileContextData?.userProfile?.username && setForumPost({ ...forumPost, author: userProfileContextData?.userProfile.username });
+  }, [userProfileContextData]);
 
   const handleNewChip = (newChips: string[]) => {
     // newChips = newChips.map(chip => chip[0].toUpperCase() + chip.substring(1).toLowerCase())
@@ -96,4 +104,3 @@ function AddPostFormCard(props: {
     </DefaultFormCard>
   );
 }
-export default AddPostFormCard;

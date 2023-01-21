@@ -1,7 +1,12 @@
 import { Tooltip, IconButton } from "@mui/material";
 import React, { ReactElement } from "react";
 
-function DefaultIconButton(props: {
+/**
+ * Displays a customaizable icon as a button
+ * @param props 
+ * @returns 
+ */
+export default function DefaultIconButton(props: {
   tooltipTitle: string;
   onClick: Function;
   icon: ReactElement;
@@ -12,5 +17,3 @@ function DefaultIconButton(props: {
     </Tooltip>
   );
 }
-
-export default DefaultIconButton;

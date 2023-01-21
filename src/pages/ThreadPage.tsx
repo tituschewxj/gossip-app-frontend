@@ -11,7 +11,12 @@ import { getComments, getPost } from "../api/forumApi";
 import AddCommentFormCard from "../components/Form/AddCommentFormCard";
 import CommentsList from "../components/Comments/CommentsList";
 
-function ThreadPage() {
+/**
+ * ThreadPage component displays a single post and it's comments in a page.
+ * It also displays a comment box to add a comment.
+ * @returns 
+ */
+export default function ThreadPage() {
   const { post_id } = useParams();
   const [errorVisible, setErrorVisible] = useState<boolean>(false);
 
@@ -48,10 +53,3 @@ function ThreadPage() {
     </Container>
   );
 }
-
-export default ThreadPage;
-/*
-shows the specific post and its comments
-
-ability to add comment
-*/

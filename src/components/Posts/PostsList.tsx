@@ -2,7 +2,12 @@ import React from "react";
 
 import Post from "./Post";
 
-function PostsList(props: { forumPostsData: ForumPostsData }) {
+/**
+ * PostsList component displays a list of posts
+ * @param props 
+ * @returns 
+ */
+export default function PostsList(props: { forumPostsData: ForumPostsData }) {
   return (
     <>
       {props.forumPostsData &&
@@ -19,5 +24,3 @@ function PostsList(props: { forumPostsData: ForumPostsData }) {
     </>
   );
 }
-
-export default PostsList;

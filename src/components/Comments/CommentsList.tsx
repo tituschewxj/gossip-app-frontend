@@ -1,7 +1,12 @@
 import React from "react";
 import Comment from "./Comment";
 
-function CommentsList(props: {
+/**
+ * CommentsList component displays a list of comments
+ * @param props 
+ * @returns 
+ */
+export default function CommentsList(props: {
   forumComments: ForumComment[];
   enableButtons?: boolean;
 }) {
@@ -20,5 +25,3 @@ function CommentsList(props: {
     </>
   );
 }
-
-export default CommentsList;

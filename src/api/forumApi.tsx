@@ -1,6 +1,10 @@
 import axios from "./axios";
 
-// Posts
+/*
+A list of async functions that request specific data from the database.
+*/
+
+// Posts functions
 export const getPosts = async (page?: number): Promise<ForumPostsData> => {
   return axios.get(`api/v1/posts?page=${page}`).then((res) => res.data);
 };
@@ -41,7 +45,7 @@ export const deletePost = async (id: string) => {
   return axios.delete(`api/v1/posts/${id}`);
 };
 
-// Comments
+// Comments functions
 export const getComments = async (post_id: string): Promise<ForumComment[]> => {
   return axios.get(`api/v1/posts/${post_id}/comments`).then((res) => res.data);
 };
@@ -53,14 +57,9 @@ export const getComment = async (id: string): Promise<ForumComment> => {
       return { ...res, type: "comment" };
     });
 };
-export const getCommentsByProfileId = async (profile_id: number) => {
-  return axios
-    .get(`api/v1/profiles/${profile_id}?state=get_comments`)
-    .then((res) => res.data);
-};
 export const getCommentsByUsername = async (username: string) => {
   return axios
-    .get(`api/v1/profiles?username=${username}&state=get_comments`)
+    .get(`api/v1/comments?username=${username}`)
     .then((res) => res.data);
 };
 export const addComment = async (comment: ForumComment) => {
@@ -73,7 +72,7 @@ export const deleteComment = async (id: string) => {
   return axios.delete(`api/v1/comments/${id}`);
 };
 
-// Profiles
+// Profiles functions
 export const addProfile = async (forumProfile: ForumProfile) => {
   return axios.post(`api/v1/profiles`, forumProfile);
 };
@@ -103,7 +102,7 @@ export const getUsernames = async () => {
     .then((res) => res.data);
 };
 
-// Tags
+// Tags functions
 export const getTags = async () => {
   return axios.get(`api/v1/tags`).then((res) => res.data);
 };
@@ -116,7 +115,8 @@ export const getTag = async (id: number) => {
 export const getTagsByPostId = async (post_id: number) => {
   return axios.get(`api/v1/tags?post_id=${post_id}`).then((res) => res.data);
 };
-// PostsTags
+
+// PostsTags functions
 export const addPostTag = async (postsTag: ForumPostsTag) => {
   return axios.post(`api/v1/posts_tags`, postsTag);
 };

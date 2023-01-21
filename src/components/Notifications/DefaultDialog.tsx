@@ -9,12 +9,16 @@ import {
 } from "@mui/material";
 import { useErrorState } from "../../hooks/useErrorState";
 
-function DefaultDialog(props: {
+/**
+ * DefaultDialog component shows confirmation/error popups. 
+ * @param props 
+ * @returns 
+ */
+export default function DefaultDialog(props: {
   open: boolean;
   dialogBehaviour: DialogBehaviour;
 }) {
   const { errorMsg } = useErrorState();
-  // default dialog for confirmation/error
   return (
     <Dialog
       open={props.open}
@@ -51,5 +55,3 @@ function DefaultDialog(props: {
     </Dialog>
   );
 }
-
-export default DefaultDialog;

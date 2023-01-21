@@ -22,7 +22,11 @@ const useStyles = makeStyles({
   },
 });
 
-function Searchbar() {
+/**
+ * Displays the search bar.
+ * @returns 
+ */
+export default function Searchbar() {
   const classes = useStyles();
   const location = useLocation();
   const [tags, setTags] = useState<string[]>([]);
@@ -100,5 +104,3 @@ function Searchbar() {
     </Box>
   );
 }
-
-export default Searchbar;

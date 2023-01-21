@@ -1,16 +1,23 @@
-import { Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import { useMutation } from "react-query";
+
+import { Box } from "@mui/material";
+
 import { addComment } from "../../api/forumApi";
-// import { FormContext } from '../../hooks/context';
-import useUserProfile from "../../hooks/useUserProfile";
+import  { UserProfileContext } from "../../hooks/useUserProfile";
 import { initForumComment } from "../../types/typeDefaults";
 import DefaultFormCard from "./DefaultFormCard";
 import DefaultButton from "./DefaultButton";
 import DefaultTextField from "./DefaultTextField";
 
-function AddCommentFormCard(props: {
+/**
+ * Displays a Card where a comment can be added into.
+ * @param props 
+ * @returns 
+ */
+export default function AddCommentFormCard(props: {
   handleCancel: Function;
   handleSubmitSuccess: Function;
 }) {
@@ -23,15 +30,15 @@ function AddCommentFormCard(props: {
       },
     }
   );
-  const username = useUserProfile()?.username;
+  const userProfileContextData = useContext(UserProfileContext);
 
   const [forumComment, setForumComment] = useState(
     initForumComment({ post_id: parseInt(`${post_id}`) })
   );
   useEffect(() => {
-    console.log(`username: ${username}`);
-    username && setForumComment({ ...forumComment, author: username });
-  }, [username]);
+    console.log(`username: ${userProfileContextData?.userProfile?.username}`);
+    userProfileContextData?.userProfile?.username && setForumComment({ ...forumComment, author: userProfileContextData?.userProfile.username });
+  }, [userProfileContextData]);
 
   return (
     <DefaultFormCard>
@@ -66,5 +73,3 @@ function AddCommentFormCard(props: {
     </DefaultFormCard>
   );
 }
-
-export default AddCommentFormCard;

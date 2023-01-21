@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -14,23 +14,21 @@ import {
   Box,
 } from "@mui/material";
 
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-import CreateIcon from "@mui/icons-material/Create";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-
-import NavigateIconButton from "../Form/DefaultIconButton";
 import useLoginState from "../../hooks/useLoginState";
-import useUserProfile from "../../hooks/useUserProfile";
-import { useMutation, useQuery } from "react-query";
-import { getTags } from "../../api/forumApi";
+import { UserProfileContext } from "../../hooks/useUserProfile";
+import { useMutation } from "react-query";
 import Searchbar from "./Searchbar";
 import { userLogout } from "../../api/authenticationApi";
 
-function Navbar() {
+/**
+ * Displays the navigation bar.
+ * @returns 
+ */
+export default function Navbar() {
   const navigate = useNavigate();
   const isLoggedIn = useLoginState();
-  const username = useUserProfile()?.username;
+  const userProfileContextData = useContext(UserProfileContext);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -40,7 +38,13 @@ function Navbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { mutate: logout } = useMutation(async () => userLogout());
+  const { mutate: logout } = useMutation(async () => userLogout(), {
+    onSuccess: () => {
+      navigate("/");
+      console.log("done");
+      userProfileContextData?.setUserProfile();
+    }
+  });
 
   return (
     <AppBar position="sticky">
@@ -96,7 +100,7 @@ function Navbar() {
           </>
         )}
 
-        {isLoggedIn && username && (
+        {isLoggedIn && userProfileContextData?.userProfile?.username && (
           <>
             <Tooltip title="Account settings">
               <IconButton
@@ -117,7 +121,7 @@ function Navbar() {
             >
               <MenuItem
                 onClick={() => {
-                  navigate(`profile/${username}`);
+                  navigate(`profile/${userProfileContextData.userProfile?.username}`);
                   handleClose();
                 }}
               >
@@ -143,7 +147,6 @@ function Navbar() {
                 onClick={() => {
                   logout();
                   handleClose();
-                  navigate("/");
                 }}
               >
                 Logout
@@ -155,4 +158,3 @@ function Navbar() {
     </AppBar>
   );
 }
-export default Navbar;

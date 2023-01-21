@@ -7,7 +7,12 @@ import { getProfileByUsername } from "../api/forumApi";
 import ProfileComments from "../components/Profile/ProfileComments";
 import ProfilePosts from "../components/Profile/ProfilePosts";
 
-function ProfilePage(props: { activeTab?: number }) {
+/**
+ * Profile page is the page where a user profile is shown.
+ * @param props 
+ * @returns 
+ */
+export default function ProfilePage(props: { activeTab?: number }) {
   // Page for viewing the profile of a user, contains the user's posts, comments, and bookmarks
   const { username } = useParams();
   const { data: forumProfile, isLoading } = useQuery(
@@ -66,7 +71,7 @@ function ProfilePage(props: { activeTab?: number }) {
             >
               <Tab label="Posts" />
               <Tab label="Comments" />
-              <Tab label="Bookmarked" />
+              {/* <Tab label="Bookmarked" /> */}
             </Tabs>
             <Box>
               <TabPanel value={tabState} index={0}>
@@ -75,9 +80,9 @@ function ProfilePage(props: { activeTab?: number }) {
               <TabPanel value={tabState} index={1}>
                 <ProfileComments />
               </TabPanel>
-              <TabPanel value={tabState} index={2}>
+              {/* <TabPanel value={tabState} index={2}>
                 Bookmarks
-              </TabPanel>
+              </TabPanel> */}
             </Box>
           </Paper>
         </Container>
@@ -109,5 +114,3 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
-
-export default ProfilePage;

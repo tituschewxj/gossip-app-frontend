@@ -8,7 +8,12 @@ import DefaultFormCard from "./DefaultFormCard";
 import DefaultButton from "./DefaultButton";
 import DefaultTextField from "./DefaultTextField";
 
-function LoginFormCard(props: {
+/**
+ * LoginFormCard is the card that is displayed when logging in.
+ * @param props 
+ * @returns 
+ */
+export default function LoginFormCard(props: {
   handleCancel: Function;
   handleSubmitSuccess: Function;
 }) {
@@ -28,6 +33,7 @@ function LoginFormCard(props: {
   const [error, setError] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
 
   const handleSubmit = () => {
     setError(false);
@@ -87,5 +93,3 @@ function LoginFormCard(props: {
     </DefaultFormCard>
   );
 }
-
-export default LoginFormCard;

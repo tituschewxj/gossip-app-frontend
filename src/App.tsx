@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -13,18 +13,25 @@ import ProfilePage from "./pages/ProfilePage";
 import ResultsPage from "./pages/ResultsPage";
 import NotFound from "./pages/NotFound";
 
-import { updateJWTToken } from "./api/authenticationApi";
 import PrivateRoute from "./components/Routes/PrivateRoute";
 import DefaultDialog from "./components/Notifications/DefaultDialog";
 import { useErrorState } from "./hooks/useErrorState";
+import useUserProfile, { UserProfileContext } from "./hooks/useUserProfile";
 
-function App() {
+/**
+ * App is the base component.
+ * @returns 
+ */
+export default function App() {
   const { hasError, setHasError } = useErrorState();
+  const userProfile = useUserProfile();
   useEffect(() => {
-    updateJWTToken();
-  }, []);
+    // updateUserProfile();
+    console.log(userProfile);
+  }, [userProfile.userProfile])
+
   return (
-    <>
+    <UserProfileContext.Provider value={userProfile}>
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -43,7 +50,7 @@ function App() {
           path="/new_post"
           element={
             <PrivateRoute>
-              <EditPage editType="new" />
+              <EditPage editType="new_post" />
             </PrivateRoute>
           }
         />
@@ -51,7 +58,7 @@ function App() {
           path="/posts/:post_id/edit"
           element={
             <PrivateRoute>
-              <EditPage editType="edit" />
+              <EditPage editType="edit_post" />
             </PrivateRoute>
           }
         />
@@ -59,7 +66,7 @@ function App() {
           path="/comments/:comment_id/edit"
           element={
             <PrivateRoute>
-              <EditPage editType="edit" />
+              <EditPage editType="edit_comment" />
             </PrivateRoute>
           }
         />
@@ -81,10 +88,10 @@ function App() {
           path="/profile/:username/comments"
           element={<ProfilePage activeTab={1} />}
         />
-        <Route
+        {/* <Route
           path="/profile/:username/bookmarks"
           element={<ProfilePage activeTab={2} />}
-        />
+        /> */}
 
         <Route path="/search" element={<ResultsPage />} />
 
@@ -99,8 +106,6 @@ function App() {
           }}
         />
       )}
-    </>
+    </UserProfileContext.Provider>
   );
 }
-
-export default App;

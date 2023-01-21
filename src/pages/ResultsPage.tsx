@@ -6,7 +6,11 @@ import { useSearchParams } from "react-router-dom";
 import { getPostsByTagNames } from "../api/forumApi";
 import PostsList from "../components/Posts/PostsList";
 
-function ResultsPage() {
+/**
+ * Result page where the search result is shown.
+ * @returns 
+ */
+export default function ResultsPage() {
   // the page where search results are shown
   const [searchParams] = useSearchParams();
   const {
@@ -31,5 +35,3 @@ function ResultsPage() {
     </Container>
   );
 }
-
-export default ResultsPage;

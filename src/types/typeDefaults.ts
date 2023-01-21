@@ -1,6 +1,8 @@
-import { useNavigate } from "react-router-dom";
+/*
+This file contains a list of constructors for the specific types, with the default values for
+that type.
+*/
 
-// type default values
 export function initForumPost(options?: Partial<ForumPost>): ForumPost {
   const defaults: ForumPost = {
     type: "post",

@@ -1,17 +1,22 @@
 import { Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { updateProfile } from "../../api/forumApi";
-import useUserProfile from "../../hooks/useUserProfile";
+import { UserProfileContext } from "../../hooks/useUserProfile";
 import DefaultButton from "./DefaultButton";
 import DefaultFormCard from "./DefaultFormCard";
 import DefaultTextField from "./DefaultTextField";
 
-function EditProfile(props: {
+/**
+ * EditProfile card is where the profile fields are edited.
+ * @param props 
+ * @returns 
+ */
+export default function EditProfile(props: {
   handleCancel: Function;
   handleSubmitSuccess: Function;
 }) {
-  const initUserProfile = useUserProfile();
+  const userProfileContextData = useContext(UserProfileContext);
   const [userProfile, setUserProfile] = useState<ForumProfile>();
   const { mutate: updateMutate } = useMutation(
     async (userProfile: ForumProfile) => updateProfile(userProfile),
@@ -24,8 +29,10 @@ function EditProfile(props: {
   );
   const [usernameError, setUsernameError] = useState<boolean>(false);
   useEffect(() => {
-    setUserProfile(initUserProfile);
-  }, [initUserProfile]);
+    if (userProfileContextData) {
+      setUserProfile(userProfileContextData.userProfile);
+    }
+  }, [userProfileContextData]);
   const handleSubmit = () => {
     setUsernameError(userProfile?.username === "");
     if (userProfile && userProfile.username !== "") {
@@ -78,5 +85,3 @@ function EditProfile(props: {
     </>
   );
 }
-
-export default EditProfile;

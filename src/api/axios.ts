@@ -1,20 +1,24 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
+/**
+ * Checks if a JWT token has expired
+ * @returns 
+ */
 export const hasJWTExpired = (): boolean => {
   const token = localStorage.getItem("token");
   if (token) {
     const decoded = jwtDecode<JWTToken>(token);
     const dateNow = new Date();
     if (decoded.exp * 1000 > dateNow.getTime()) {
-      console.log("not expired");
+      // console.log("not expired");
       return false;
     } else {
-      console.log("expired");
+      // console.log("expired");
       return true;
     }
   }
-  console.log("no jwt");
+  // console.log("no jwt");
   return true;
 };
 

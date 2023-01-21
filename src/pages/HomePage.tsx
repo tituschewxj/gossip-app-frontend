@@ -6,6 +6,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getPosts } from "../api/forumApi";
 import PostsList from "../components/Posts/PostsList";
 
+/**
+ * Home page is the default page that is shown to the user.
+ * @returns 
+ */
 export default function HomePage() {
   // Home page for all posts with pagination
   const queryClient = useQueryClient();

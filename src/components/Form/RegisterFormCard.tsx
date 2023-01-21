@@ -9,7 +9,12 @@ import DefaultFormCard from "./DefaultFormCard";
 import DefaultButton from "./DefaultButton";
 import DefaultTextField from "./DefaultTextField";
 
-function RegisterFormCard(props: {
+/**
+ * The card where a new user can input their details to register.
+ * @param props 
+ * @returns 
+ */
+export default function RegisterFormCard(props: {
   handleCancel: Function;
   handleSubmitSuccess: Function;
 }) {
@@ -26,7 +31,6 @@ function RegisterFormCard(props: {
           user_id: user_id,
           description: "",
         } as ForumProfile);
-        // props.handleSubmitSuccess()
       },
       onError: () => {
         setError(true);
@@ -34,50 +38,73 @@ function RegisterFormCard(props: {
     }
   );
   const { mutate: addProfileMutate } = useMutation(
-    async (forumProfile: ForumProfile) => addProfile(forumProfile)
+    async (forumProfile: ForumProfile) => addProfile(forumProfile), 
+    {
+      onSuccess: () => {
+        props.handleSubmitSuccess()
+      }
+    }
   );
   const { data: usernames } = useQuery("get_usernames", () => getUsernames());
   const navigate = useNavigate();
 
-  const [emailError, setEmailError] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>("");
   const [usernameError, setUsernameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
 
   const onSubmitRegister = () => {
-    setError(false);
-    setEmailError(forumRegister.email === "");
-    console.log(usernames);
+    let hasError = false;
+    if (forumRegister.email === "") {
+      setEmailError("Email cannot be empty");
+      hasError = true;
+    } else if (!/^.+@.+$/.test(forumRegister.email)) {
+      setEmailError("Invalid email");
+      hasError = true;
+    }else {
+      setEmailError("");
+    }
+    // console.log(usernames);
     if (forumRegister.username === "") {
       setUsernameError("Username cannot be empty");
+      hasError = true;
     } else if (
       usernames.filter(
         (username: string) => username === forumRegister.username
       ).length !== 0
     ) {
       setUsernameError("Username taken");
+      hasError = true;
     } else {
       setUsernameError("");
     }
     if (forumRegister.password !== forumRegister.confirm_password) {
       setPasswordError("Password not identical");
       setConfirmPasswordError("Password not identical");
+      hasError = true;
     } else {
-      setPasswordError(
-        forumRegister.password === "" ? "Password cannot be empty" : ""
-      );
-      setConfirmPasswordError(
-        forumRegister.confirm_password === ""
-          ? "Confirm Password cannot be empty"
-          : ""
-      );
+      if (forumRegister.password === "") {
+        setPasswordError("Password cannot be empty");
+        hasError = true;
+      } else {
+        setPasswordError("");
+      }
+      if (forumRegister.confirm_password === ""){
+        setConfirmPasswordError("Confirm Password cannot be empty");
+        hasError = true;
+      } else {
+        setConfirmPasswordError("");
+      }
     }
+    setError(hasError);
 
-    userMutate({
-      email: forumRegister.email,
-      password: forumRegister.password,
-    } as ForumUser);
+    if (!hasError) {
+      userMutate({
+        email: forumRegister.email,
+        password: forumRegister.password,
+      } as ForumUser);
+    }
   };
 
   return (
@@ -102,7 +129,7 @@ function RegisterFormCard(props: {
       <>
         <DefaultTextField
           type="email"
-          emptyError={emailError}
+          errorMsg={emailError}
           textFieldProps={{
             label: "Email",
             value: forumRegister.email,
@@ -154,5 +181,3 @@ function RegisterFormCard(props: {
     </DefaultFormCard>
   );
 }
-
-export default RegisterFormCard;

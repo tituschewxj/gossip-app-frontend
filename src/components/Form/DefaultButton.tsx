@@ -1,7 +1,12 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-function DefaultButton(props: {
+/**
+ * Displays a customizable button
+ * @param props 
+ * @returns 
+ */
+export default function DefaultButton(props: {
   onClick: Function;
   text: string;
   backgroundColor?: string;
@@ -26,5 +31,3 @@ function DefaultButton(props: {
     </Button>
   );
 }
-
-export default DefaultButton;

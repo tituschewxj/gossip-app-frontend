@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 
+/**
+ * Error state determines if the error dialog is displayed and the message displayed
+ * @returns 
+ */
 export function useErrorState() {
-  // determines if the error dialog is displayed and the message displayed
   const [hasError, setHasError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   useEffect(() => {

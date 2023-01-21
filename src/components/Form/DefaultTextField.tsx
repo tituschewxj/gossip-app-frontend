@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import { Box, TextField } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 
 type TextFieldProps = {
   label: string;
@@ -11,7 +10,12 @@ type TextFieldProps = {
   minRows?: number;
 };
 
-function DefaultTextField(props: {
+/**
+ * Displays a text field.
+ * @param props 
+ * @returns 
+ */
+export default function DefaultTextField(props: {
   errorMsg?: string;
   isVisible?: boolean;
   textFieldProps: TextFieldProps;
@@ -56,5 +60,3 @@ function DefaultTextField(props: {
     </>
   );
 }
-
-export default DefaultTextField;

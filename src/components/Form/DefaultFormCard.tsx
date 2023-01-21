@@ -9,6 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 
+/**
+ * Displays the card, with the contents specified by it's children
+ * @param props 
+ * @returns 
+ */
 export default function DefaultFormCard(props: {
   formHeader?: string;
   children?: React.ReactElement;

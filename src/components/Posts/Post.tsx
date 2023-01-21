@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Card from "@mui/material/Card";
@@ -20,25 +20,22 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import moment from "moment";
 
 import DefaultIconButton from "../Form/DefaultIconButton";
-// import { useQuery } from 'react-query'
-// import { getTagsByPostId } from '../api/forumApi'
-import useUserProfile from "../../hooks/useUserProfile";
+import { UserProfileContext } from "../../hooks/useUserProfile";
 import DefaultButton from "../Form/DefaultButton";
 
-function Post(props: {
+/**
+ * Post component displays a post information in a card.
+ * @param props 
+ * @returns 
+ */
+export default function Post(props: {
   forumPost: ForumPost;
   disabledClickable?: boolean;
   enableButtons?: boolean;
   tags?: ForumTag[];
 }) {
   const navigate = useNavigate();
-  const userProfile = useUserProfile();
-  // const [postTags, setPostTags] = useState<ForumTag[]>()
-  // useQuery(`get_tags_for_post_${props.forumPost.id}`, () => getTagsByPostId(parseInt(`${props.forumPost.id}`)), {
-  //   onSuccess: (res) => {
-  //     setPostTags(res)
-  //   }
-  // })
+  const userProfileContextData = useContext(UserProfileContext);
 
   return (
     <Container sx={{ marginTop: 1 }}>
@@ -91,7 +88,8 @@ function Post(props: {
         </CardContent>
 
         <CardActions sx={{ display: "flex", flexDirection: "row" }}>
-          {userProfile && userProfile.id === props.forumPost.profile_id && (
+          {userProfileContextData && 
+          userProfileContextData.userProfile?.id === props.forumPost.profile_id && (
             <ButtonGroup>
               <DefaultIconButton
                 tooltipTitle="Edit Post"
@@ -125,5 +123,3 @@ function Post(props: {
     </Container>
   );
 }
-
-export default Post;

@@ -5,6 +5,10 @@ import { useParams } from "react-router-dom";
 import { getPostsByUsername } from "../../api/forumApi";
 import PostsList from "../Posts/PostsList";
 
+/**
+ * ProfilePosts displays a list of profile posts.
+ * @returns 
+ */
 function ProfilePosts() {
   const { username } = useParams();
   const { data: posts, isLoading } = useQuery(

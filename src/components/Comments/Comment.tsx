@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -18,16 +18,21 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import moment from "moment";
 
-import useUserProfile from "../../hooks/useUserProfile";
+import { UserProfileContext } from "../../hooks/useUserProfile";
 import DefaultIconButton from "../Form/DefaultIconButton";
 import DefaultButton from "../Form/DefaultButton";
 
-function Comment(props: {
+/**
+ * Comment component displays a comment in a card.
+ * @param props 
+ * @returns 
+ */
+export default function Comment(props: {
   forumComment: ForumComment;
   enableButtons?: boolean;
 }) {
   const navigate = useNavigate();
-  const userProfile = useUserProfile();
+  const userProfileContextData = useContext(UserProfileContext);
 
   return (
     <>
@@ -71,8 +76,8 @@ function Comment(props: {
           </CardContent>
 
           <CardActions sx={{ display: "flex", flexDirection: "row" }}>
-            {userProfile &&
-              userProfile.id === props.forumComment.profile_id && (
+            {userProfileContextData && userProfileContextData.userProfile &&
+              userProfileContextData.userProfile.id === props.forumComment.profile_id && (
                 <ButtonGroup>
                   <DefaultIconButton
                     tooltipTitle="Edit Comment"
@@ -100,5 +105,3 @@ function Comment(props: {
     </>
   );
 }
-
-export default Comment;
