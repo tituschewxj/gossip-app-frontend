@@ -6,7 +6,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 // import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 
 // const theme = createTheme({
 //   palette: {
@@ -42,7 +42,7 @@ root.render(
         {/* <ThemeProvider theme={theme}> */}
         <App />
         {/* </ThemeProvider> */}
-        <ReactQueryDevtools initialIsOpen />
+        {/* <ReactQueryDevtools initialIsOpen /> */}
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>
