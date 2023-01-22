@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Container, Pagination } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import React from "react";
+import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getPosts } from "../api/forumApi";
@@ -12,30 +12,21 @@ import PostsList from "../components/Posts/PostsList";
  * @returns 
  */
 export default function HomePage() {
-
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { page } = useParams();
-  const [activePage, setActivePage] = useState(page ? parseInt(page) : 1);
   const { data: posts, isLoading } = useQuery(
-    ["all_posts", activePage],
-    () => getPosts(activePage),
+    ["all_posts", page],
+    () => getPosts(page ? parseInt(page) : 1),
     {
       keepPreviousData: true,
       staleTime: 5000,
     }
   );
 
-  useEffect(() => {
-    // queryClient.prefetchQuery(['all_posts', activePage], () => getPosts(activePage))
-    navigate(`/page/${activePage}`);
-  }, [activePage, queryClient, navigate]);
-
-  useEffect(() => {
-    if (page) {
-      setActivePage(parseInt(page));
-    }
-  }, [page]);
+  function handleUpdatePage(page: number) {
+    navigate(`/page/${page}`);
+    window.scrollTo(0, 0);
+  }
 
   return (
     <Container sx={{ marginTop: 3 }}>
@@ -52,10 +43,9 @@ export default function HomePage() {
             boundaryCount={2}
             siblingCount={2}
             onChange={(e, v) => {
-              setActivePage(v);
-              window.scrollTo(0, 0);
+              handleUpdatePage(v);
             }}
-            page={activePage}
+            page={page ? parseInt(page) : 1}
           ></Pagination>
         </Box>
       )}
