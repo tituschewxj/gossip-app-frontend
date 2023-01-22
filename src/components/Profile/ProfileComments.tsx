@@ -1,5 +1,5 @@
 import { Container, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getCommentsByUsername } from "../../api/forumApi";
@@ -19,9 +19,9 @@ export default function ProfileComments() {
       enabled: username !== undefined,
     }
   );
-  useEffect(() => {
-    console.log(forumComments);
-  }, [forumComments]);
+  // useEffect(() => {
+  //   console.log(forumComments);
+  // }, [forumComments]);
   return (
     <Container sx={{ marginTop: 3 }}>
       {!isLoading && forumComments && (

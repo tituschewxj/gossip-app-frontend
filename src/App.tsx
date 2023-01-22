@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -25,10 +25,6 @@ import useUserProfile, { UserProfileContext } from "./hooks/useUserProfile";
 export default function App() {
   const { hasError, setHasError } = useErrorState();
   const userProfile = useUserProfile();
-  useEffect(() => {
-    // updateUserProfile();
-    console.log(userProfile);
-  }, [userProfile.userProfile])
 
   return (
     <UserProfileContext.Provider value={userProfile}>

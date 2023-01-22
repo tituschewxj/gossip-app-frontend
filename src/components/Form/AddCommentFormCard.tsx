@@ -38,9 +38,9 @@ export default function AddCommentFormCard(props: {
   );
   const [commentErrorMsg, setCommentErrorMsg] = useState<string>("");
   useEffect(() => {
-    console.log(`username: ${userProfileContextData?.userProfile?.username}`);
+    // console.log(`username: ${userProfileContextData?.userProfile?.username}`);
     userProfileContextData?.userProfile?.username && setForumComment({ ...forumComment, author: userProfileContextData?.userProfile.username });
-  }, [userProfileContextData]);
+  }, [userProfileContextData, forumComment]);
 
   function handleSubmit() {
     if (forumComment.content === "") {

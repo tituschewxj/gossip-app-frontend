@@ -8,13 +8,15 @@ import PostsList from "../components/Posts/PostsList";
 
 /**
  * Home page is the default page that is shown to the user.
+ * which contains all posts, paginated.
  * @returns 
  */
 export default function HomePage() {
-  // Home page for all posts with pagination
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [activePage, setActivePage] = useState(1);
+  const { page } = useParams();
+  const [activePage, setActivePage] = useState(page ? parseInt(page) : 1);
   const { data: posts, isLoading } = useQuery(
     ["all_posts", activePage],
     () => getPosts(activePage),
@@ -23,7 +25,6 @@ export default function HomePage() {
       staleTime: 5000,
     }
   );
-  const { page } = useParams();
 
   useEffect(() => {
     // queryClient.prefetchQuery(['all_posts', activePage], () => getPosts(activePage))
@@ -50,7 +51,10 @@ export default function HomePage() {
             color="primary"
             boundaryCount={2}
             siblingCount={2}
-            onChange={(e, v) => setActivePage(v)}
+            onChange={(e, v) => {
+              setActivePage(v);
+              window.scrollTo(0, 0);
+            }}
             page={activePage}
           ></Pagination>
         </Box>

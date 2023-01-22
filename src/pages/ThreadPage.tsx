@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Post from "../components/Posts/Post";
 
 import { useParams } from "react-router-dom";
@@ -24,6 +24,9 @@ export default function ThreadPage() {
   const { data: comments } = useQuery("post_comments", () =>
     getComments(`${post_id}`)
   );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   return (
     <Container sx={{ marginTop: 3 }}>

@@ -2,7 +2,7 @@ import { Avatar, Container, Paper, Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getProfileByUsername } from "../api/forumApi";
 import ProfileComments from "../components/Profile/ProfileComments";
 import ProfilePosts from "../components/Profile/ProfilePosts";
@@ -15,6 +15,7 @@ import ProfilePosts from "../components/Profile/ProfilePosts";
 export default function ProfilePage(props: { activeTab?: number }) {
   // Page for viewing the profile of a user, contains the user's posts, comments, and bookmarks
   const { username } = useParams();
+  const location = useLocation();
   const { data: forumProfile, isLoading } = useQuery(
     "get_profile",
     () => getProfileByUsername(`${username}`),
@@ -31,6 +32,17 @@ export default function ProfilePage(props: { activeTab?: number }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(location);
+    if (location.pathname === `/profile/${username}/posts`) {
+      setTabState(0);
+      return;
+    } else if (location.pathname === `/profile/${username}/comments`) {
+      setTabState(1);
+      return;
+    }
+  }, [username, location]);
+
+  function handleUpdateTabState(tabState: number) {
     switch (tabState) {
       case 0:
         navigate(`/profile/${username}/posts`);
@@ -38,13 +50,13 @@ export default function ProfilePage(props: { activeTab?: number }) {
       case 1:
         navigate(`/profile/${username}/comments`);
         break;
-      case 2:
-        navigate(`/profile/${username}/bookmarks`);
-        break;
+      // case 2:
+      //   navigate(`/profile/${username}/bookmarks`);
+      //   break;
       default:
         break;
     }
-  }, [tabState, username, navigate]);
+  }
 
   return (
     <>
@@ -66,8 +78,7 @@ export default function ProfilePage(props: { activeTab?: number }) {
             )}
             <Tabs
               value={tabState}
-              onChange={(e, val) => setTabState(val)}
-              aria-label="basic tabs example"
+              onChange={(e, val) => handleUpdateTabState(val)}
             >
               <Tab label="Posts" />
               <Tab label="Comments" />

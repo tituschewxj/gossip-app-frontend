@@ -26,21 +26,21 @@ export default function useUserProfile(): UserProfileContextData {
       const decoded = jwtDecode<JWTToken>(token);
       return getProfileByUserId(parseInt(decoded.sub));
     } else {
-      console.log('reject')
+      // console.log('reject')
       return Promise.resolve(undefined);
     }
   }, {
     onSuccess: (res: ForumProfile) => {
       setForumProfile(res);
-      console.log("updated")
+      // console.log("updated")
     },
     enabled: false,
   });
 
   useEffect(() => {
     refetch();
-    console.log(forumProfile);
-  }, [forumProfile])
+    // console.log(forumProfile);
+  }, [forumProfile, refetch])
 
 
 
